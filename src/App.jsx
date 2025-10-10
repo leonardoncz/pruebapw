@@ -6,12 +6,15 @@ import RecuperarContraseña from './components/usuario/RecuperarContraseña';
 import PanelUsuario from './components/usuario/PanelUsuario';
 import DetalleOrden from './components/usuario/DetalleOrden';
 import EditarPerfil from './components/usuario/EditarPerfil';
+import Busqueda from './components/usuario/Busqueda';
+
 import './App.css';
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/busqueda" element={<Busqueda />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Registro />} />
         <Route path="/recuperar-contraseña" element={<RecuperarContraseña />} />
