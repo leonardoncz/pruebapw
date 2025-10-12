@@ -1,82 +1,125 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
-// Crear el contexto
-export const AuthContext = createContext();
+// 1. Crear el contexto
+const AuthContext = createContext();
 
-// Hook personalizado para usar el contexto
+// 2. Hook personalizado para un uso más fácil
 export const useAuth = () => {
   return useContext(AuthContext);
 };
 
-// Proveedor del contexto
+// 3. Proveedor del contexto
 export const AuthProvider = ({ children }) => {
   const [usuario, setUsuario] = useState(null);
-  const [usuariosRegistrados, setUsuariosRegistrados] = useState([]);
 
-  // Cargar usuarios desde localStorage al iniciar la app
+  // Cargar el usuario desde localStorage al iniciar la app
   useEffect(() => {
-    const usuariosGuardados = JSON.parse(localStorage.getItem('usuarios')) || [];
-    setUsuariosRegistrados(usuariosGuardados);
+    const usuarioGuardado = localStorage.getItem('usuarioLogueado');
+    if (usuarioGuardado) {
+      setUsuario(JSON.parse(usuarioGuardado));
+    }
   }, []);
 
-  // Función para registrar un nuevo usuario
-  const registro = async (datosUsuario) => {
-    const emailExistente = usuariosRegistrados.find(u => u.email === datosUsuario.email);
-    if (emailExistente) {
-      throw new Error("Este correo electrónico ya está registrado.");
-    }
-    const nuevosUsuarios = [...usuariosRegistrados, datosUsuario];
-    localStorage.setItem('usuarios', JSON.stringify(nuevosUsuarios));
-    setUsuariosRegistrados(nuevosUsuarios);
+  // Función de registro
+  const registro = (datosUsuario) => {
+    return new Promise((resolve, reject) => {
+      const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+      const existeUsuario = usuarios.find(u => u.email === datosUsuario.email);
+
+      if (existeUsuario) {
+        reject(new Error("El correo electrónico ya está registrado."));
+      } else {
+        usuarios.push(datosUsuario);
+        localStorage.setItem('usuarios', JSON.stringify(usuarios));
+        resolve({ ...datosUsuario });
+      }
+    });
   };
 
-  // Función para iniciar sesión
-  const login = async (email, password) => {
-    const usuarioEncontrado = usuariosRegistrados.find(u => u.email === email);
-    if (!usuarioEncontrado) {
-      throw new Error("El correo electrónico no está registrado.");
-    }
-    if (usuarioEncontrado.password !== password) {
-      throw new Error("La contraseña es incorrecta.");
-    }
-    setUsuario(usuarioEncontrado);
+  // Función de inicio de sesión
+  const login = (email, password) => {
+    return new Promise((resolve, reject) => {
+      const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+      const usuarioEncontrado = usuarios.find(u => u.email === email && u.password === password);
+
+      if (usuarioEncontrado) {
+        localStorage.setItem('usuarioLogueado', JSON.stringify(usuarioEncontrado));
+        setUsuario(usuarioEncontrado);
+        resolve(usuarioEncontrado);
+      } else {
+        reject(new Error("Credenciales inválidas."));
+      }
+    });
   };
 
   // Función para cerrar sesión
   const logout = () => {
+    localStorage.removeItem('usuarioLogueado');
     setUsuario(null);
   };
+  
+  // Función para recuperar/actualizar contraseña
+  const recuperarPassword = (email, nuevaPassword) => {
+     return new Promise((resolve, reject) => {
+        const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+        const userIndex = usuarios.findIndex(u => u.email === email);
 
-  // Función para recuperación de contraseña
-  const recuperarContraseña = async (email, nuevaPassword) => {
-    const emailExistente = usuariosRegistrados.find(u => u.email === email);
-    if (!emailExistente) {
-     throw new Error("El correo electrónico no está registrado.");
-    }
-    
-    // Si la contraseña es 'temp_password_check', solo estamos validando, no actualizamos
-    if (nuevaPassword === 'temp_password_check') {
-        return; // Éxito, el correo existe
-    }
-
-    const usuariosActualizados = usuariosRegistrados.map(u => {
-      if (u.email === email) {
-        return { ...u, password: nuevaPassword }; // Actualiza la contraseña
-      }
-      return u;
-    });
-
-    localStorage.setItem('usuarios', JSON.stringify(usuariosActualizados));
-    setUsuariosRegistrados(usuariosActualizados);
+        if (userIndex !== -1) {
+            usuarios[userIndex].password = nuevaPassword;
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+            resolve("Contraseña actualizada con éxito.");
+        } else {
+            reject(new Error("El correo electrónico no se encuentra registrado."));
+        }
+     });
   };
+  
+  // --- FUNCIÓN CORREGIDA ---
+  // Función para actualizar el perfil (nombre, email o contraseña)
+  const actualizarPerfil = (data) => {
+    return new Promise((resolve, reject) => {
+      const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+      const userIndex = usuarios.findIndex(u => u.email === data.email);
 
+      if (userIndex === -1) {
+        return reject(new Error("Usuario no encontrado."));
+      }
+      if (usuarios[userIndex].password !== data.passwordActual) {
+        return reject(new Error("La contraseña actual es incorrecta."));
+      }
+
+      // **LA CORRECCIÓN ESTÁ AQUÍ**
+      // 1. Empezamos con una copia COMPLETA del usuario existente.
+      const usuarioActualizado = { ...usuarios[userIndex] };
+
+      // 2. Actualizamos solo los campos que el usuario proporcionó.
+      if (data.nuevoNombre) {
+        usuarioActualizado.nombre = data.nuevoNombre;
+      }
+      if (data.nuevoEmail) {
+        usuarioActualizado.email = data.nuevoEmail;
+      }
+      if (data.nuevaPassword) {
+        usuarioActualizado.password = data.nuevaPassword;
+      }
+      
+      // 3. Guardamos el objeto COMPLETO en la lista y en el estado.
+      usuarios[userIndex] = usuarioActualizado;
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+      localStorage.setItem('usuarioLogueado', JSON.stringify(usuarioActualizado)); // También actualizamos la sesión
+      setUsuario(usuarioActualizado); // Actualizamos el estado global con el objeto completo
+
+      resolve(usuarioActualizado);
+    });
+  };
 
   const value = {
     usuario,
     login,
     logout,
     registro,
-    recuperarContraseña,
+    recuperarPassword,
+    actualizarPerfil
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

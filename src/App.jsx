@@ -1,5 +1,3 @@
-// src/App.jsx
-
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CarritoProvider } from "./context/CarritoContext";
 import { AuthProvider } from "./context/AuthContext";
@@ -10,8 +8,7 @@ import Login from "./components/usuario/Login";
 import Registro from "./components/usuario/Registro";
 import PanelUsuario from "./components/usuario/PanelUsuario";
 import EditarPerfil from "./components/usuario/EditarPerfil";
-import RecuperarContraseña from "./components/usuario/RecuperarContraseña"; // <-- ¡AQUÍ ESTÁ LA SOLUCIÓN!
-// ... (asegúrate de que todos los componentes que usas estén importados)
+import RecuperarContraseña from "./components/usuario/RecuperarContraseña";
 import Busqueda from "./components/usuario/Busqueda";
 import CarritoPage from "./components/carrito/CarritoPage";
 import CheckoutPage from "./components/carrito/CheckoutPage";
@@ -23,22 +20,59 @@ import RutaProtegida from "./components/RutaProtegida";
 import Header from "./components/layout/Header";
 
 function App() {
-  // ... el resto de tu código se mantiene igual
   return (
     <AuthProvider>
       <CarritoProvider>
         <Router>
           <Header />
-          <main >
+          <main>
             <Routes>
-              {/* Rutas Públicas */}
+              {/* --- Rutas Públicas --- */}
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/registro" element={<Registro />} />
-              {/* Ahora esta línea funcionará correctamente */}
               <Route path="/recuperar-contraseña" element={<RecuperarContraseña />} />
               <Route path="/busqueda" element={<Busqueda />} />
-              {/* ... resto de las rutas ... */}
+              <Route path="/carrito" element={<CarritoPage />} />
+              <Route path="/confirmacion" element={<ConfirmacionPage />} />
+
+
+              {/* --- Rutas Privadas (requieren inicio de sesión) --- */}
+              <Route 
+                path="/perfil/editar" 
+                element={
+                  <RutaProtegida>
+                    <EditarPerfil />
+                  </RutaProtegida>
+                } 
+              />
+               <Route 
+                path="/panel" 
+                element={
+                  <RutaProtegida>
+                    <PanelUsuario />
+                  </RutaProtegida>
+                } 
+              />
+              <Route 
+                path="/orden/:id" 
+                element={
+                  <RutaProtegida>
+                    <DetalleOrden />
+                  </RutaProtegida>
+                } 
+              />
+              <Route 
+                path="/checkout" 
+                element={
+                  <RutaProtegida>
+                    <CheckoutPage />
+                  </RutaProtegida>
+                } 
+              />
+              
+              {/* Aquí puedes añadir más rutas protegidas si es necesario */}
+
             </Routes>
           </main>
         </Router>
@@ -48,3 +82,4 @@ function App() {
 }
 
 export default App;
+
