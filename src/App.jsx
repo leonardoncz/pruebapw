@@ -14,8 +14,10 @@ import CarritoPage from "./components/carrito/CarritoPage";
 import CheckoutPage from "./components/carrito/CheckoutPage";
 import ConfirmacionPage from "./components/carrito/ConfirmacionPage";
 import DetalleOrden from "./components/usuario/DetalleOrden";
-// ... etc.
-
+import DetalleOrdenAdmin from "./components/admin/DetalleOrdenAdmin";
+import DetalleUsuarioAdmin from "./components/admin/DetalleUsuarioAdmin";
+import GestionOrdenes from "./components/admin/GestionOrdenes";
+import GestionUsuarios from "./components/admin/GestionUsuarios";
 import RutaProtegida from "./components/RutaProtegida";
 import Header from "./components/layout/Header";
 
@@ -34,7 +36,11 @@ function App() {
               <Route path="/recuperar-contraseña" element={<RecuperarContraseña />} />
               <Route path="/busqueda" element={<Busqueda />} />
               <Route path="/carrito" element={<CarritoPage />} />
-              <Route path="/confirmacion" element={<ConfirmacionPage />} />
+              <Route path="/detalle-orden-admin" element={<DetalleOrdenAdmin />} />
+              <Route path="/detalle-orden-admin" element={<DetalleUsuarioAdmin />} />
+              <Route path="/gestion-ordenes" element={<GestionOrdenes />} />
+              <Route path="/gestion-usuarios" element={<GestionUsuarios />} />
+            
 
 
               {/* --- Rutas Privadas (requieren inicio de sesión) --- */}
