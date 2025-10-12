@@ -20,17 +20,30 @@ import './App.css';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/registro" element={<Registro />} />
-        <Route path="/recuperar-contraseña" element={<RecuperarContraseña />} />
-        <Route path="/panel" element={<PanelUsuario />} />
-        <Route path="/orden/:id" element={<DetalleOrden />} />
-        <Route path="/perfil/editar" element={<EditarPerfil />} />
-      </Routes>
-    </Router>
+    <CarritoProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/registro" element={<Registro />} />
+          <Route path="/recuperar-contraseña" element={<RecuperarContraseña />} />
+          <Route path="/panel" element={<PanelUsuario />} />
+          <Route path="/orden/:id" element={<DetalleOrden />} />
+          <Route path="/perfil/editar" element={<EditarPerfil />} />
+           /* 👇 AÑADE TODAS ESTAS RUTAS NUEVAS 👇 */
+          <Route path="/busqueda" element={<Busqueda />} />
+          <Route path="/carrito" element={<CarritoPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/confirmacion" element={<ConfirmacionPage />} />
+
+          /* Rutas de Administrador */
+          <Route path="/admin/usuarios" element={<GestionUsuarios />} />
+          <Route path="/admin/usuario/:id" element={<DetalleUsuarioAdmin />} />
+          <Route path="/admin/ordenes" element={<GestionOrdenes />} />
+          <Route path="/admin/orden/:id" element={<DetalleOrdenAdmin />} />
+        </Routes>
+      </Router>
+    </CarritoProvider>
   );
 }
 

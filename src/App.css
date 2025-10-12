@@ -322,38 +322,15 @@ h2 {
   margin-bottom: 10px;
 }
 
-
-/* ADMIN Styles */
-.admin-container {
-  max-width: 900px;
-  margin: 50px auto;
-  background: #fdfdff;
-  padding: 25px 35px;
-  border-radius: 20px;
-  box-shadow: 0 0 16px rgba(118, 134, 160, 0.4);
-  font-family: 'Roboto Slab', serif;
-}
 .admin-title {
   text-align: center;
   font-weight: 900;
   color: #3d5a80;
   margin-bottom: 20px;
 }
-.admin-filter-bar {
-  margin-bottom: 20px;
-  text-align: center;
-}
-.admin-filter-input {
-  padding: 10px 15px;
-  width: 50%;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-}
-.admin-table {
-  width: 100%;
-  border-collapse: collapse;
-}
+
+
+
 .admin-table th,
 .admin-table td {
   padding: 12px 10px;
@@ -369,33 +346,13 @@ h2 {
   gap: 10px;
   align-items: center;
 }
-.admin-btn-toggle {
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  cursor: pointer;
-}
-.admin-btn-toggle.active {
-  background-color: #e57373; /* Rojo para desactivar */
-}
-.admin-btn-toggle.inactive {
-  background-color: #81c784; /* Verde para activar */
-}
+
 .admin-link {
   text-decoration: none;
   color: #2962ff;
   font-weight: 700;
 }
-.admin-link:hover {
-  text-decoration: underline;
-}
-.admin-link-back {
-    display: inline-block;
-    margin-top: 20px;
-    font-weight: bold;
-    color: #3d5a80;
-}
+
 .detalle-container.admin-detalle {
     background: #f4f6f8;
 }
@@ -434,12 +391,7 @@ h2 {
   box-shadow: 0 0 16px rgba(118, 134, 160, 0.4);
   font-family: 'Roboto Slab', serif;
 }
-.admin-title {
-  text-align: center;
-  font-weight: 900;
-  color: #3d5a80;
-  margin-bottom: 20px;
-}
+
 .admin-filter-bar {
   margin-bottom: 20px;
   text-align: center;
@@ -455,21 +407,8 @@ h2 {
   width: 100%;
   border-collapse: collapse;
 }
-.admin-table th,
-.admin-table td {
-  padding: 12px 10px;
-  border-bottom: 1px solid #e0e0e0;
-  text-align: left;
-}
-.admin-table th {
-  background-color: #f4f6f8;
-  color: #3d5a80;
-}
-.admin-actions {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
+
+
 .admin-btn-toggle {
   padding: 5px 10px;
   border: none;
@@ -491,36 +430,11 @@ h2 {
 .admin-link:hover {
   text-decoration: underline;
 }
-.admin-link-back {
-    display: inline-block;
-    margin-top: 20px;
-    font-weight: bold;
-    color: #3d5a80;
-}
+
 .detalle-container.admin-detalle {
     background: #f4f6f8;
 }
 
-/* Pega esto al final de tu sección de ADMIN Styles en App.css */
-
-.admin-link-back {
-    display: inline-block;
-    margin-top: 25px;
-    font-weight: bold;
-    color: #3d5a80;
-    text-decoration: none;
-    transition: color 0.2s;
-}
-
-.admin-link-back:hover {
-    color: #2962ff;
-    text-decoration: underline;
-}
-
-.admin-back-link-container {
-    text-align: center;
-    width: 100%;
-}
 
 
 
