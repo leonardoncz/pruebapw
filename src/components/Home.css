@@ -124,15 +124,19 @@ body {
 }
 
 .animal-card {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    text-align: center;
-    padding-bottom: 15px;
-    transition: transform 0.3s, box-shadow 0.3s;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  
+  /* --- AÑADIMOS FLEXBOX PARA CONTROLAR EL INTERIOR --- */
+  display: flex;
+  flex-direction: column; /* Apila los elementos verticalmente */
+  justify-content: space-between; /* Empuja el botón hacia abajo */
+  align-items: center; /* Centra todo horizontalmente */
+  padding-bottom: 15px;
 }
-
 .animal-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);

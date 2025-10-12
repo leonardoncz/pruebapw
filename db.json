@@ -1,0 +1,15 @@
+
+{
+  "animales": [
+    { "id": 1, "name": "Max", "tipo": "perro", "raza": "labrador", "image": "https://images.dog.ceo/breeds/labrador/n02099712_5631.jpg" },
+    { "id": 2, "name": "Luna", "tipo": "gato", "raza": "siames", "image": "https://cdn2.thecatapi.com/images/53h.jpg" },
+    { "id": 3, "name": "Rocky", "tipo": "perro", "raza": "beagle", "image": "https://images.dog.ceo/breeds/beagle/n02088364_12272.jpg" }
+  ],
+  "usuarios": [
+    { "id": 1, "nombre": "Usuario de Prueba", "email": "user@test.com" }
+  ],
+  "ordenes": [
+    { "id": 1, "usuarioId": 1, "fecha": "2025-10-10", "estado": "Enviado", "total": 45.50 },
+    { "id": 2, "usuarioId": 1, "fecha": "2025-10-12", "estado": "Pendiente", "total": 19.99 }
+  ]
+}

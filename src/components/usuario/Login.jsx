@@ -1,24 +1,27 @@
+// src/components/usuario/Login.jsx
 import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("user@test.com"); // Pre-llenado para pruebas
+  const [password, setPassword] = useState("123456"); // Pre-llenado para pruebas
   const [error, setError] = useState("");
 
-  const validarEmail = (email) => /\S+@\S+\.\S+/.test(email);
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/panel"; // A dónde ir después del login
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validarEmail(email)) {
-      setError("Email no válido");
-      return;
-    }
-    if (password.length < 6) {
-      setError("La contraseña debe tener al menos 6 caracteres");
-      return;
-    }
     setError("");
-    alert("Login exitoso (simulado)");
+    try {
+      await login(email, password);
+      navigate(from, { replace: true });
+    } catch (err) {
+      setError("Credenciales incorrectas. Inténtalo de nuevo.");
+    }
   };
 
   return (
