@@ -1,42 +1,51 @@
+
 [
   {
     "id": 500,
-    "fecha": "1/10/2025",
-    "usuario": {
-      "nombre": "Cliente 1",
-      "apellido": "Demo 1"
+    "fecha": "5/10/2025",
+    "usuario": { "nombre": "Ana", "apellido": "García" },
+    "producto": {
+      "name": "Max",
+      "type": "Perro",
+      "breed": "Labrador"
     },
-    "estado": "Cancelada",
-    "total": "189.56"
+    "estado": "Completada",
+    "total": "250.00"
   },
   {
     "id": 501,
-    "fecha": "1/10/2025",
-    "usuario": {
-      "nombre": "Cliente 2",
-      "apellido": "Demo 2"
+    "fecha": "6/10/2025",
+    "usuario": { "nombre": "Luis", "apellido": "Martinez" },
+    "producto": {
+      "name": "Bella",
+      "type": "Perro",
+      "breed": "Beagle"
     },
-    "estado": "Pendiente",
-    "total": "45.12"
+    "estado": "Enviado",
+    "total": "220.00"
   },
   {
     "id": 502,
-    "fecha": "2/10/2025",
-    "usuario": {
-      "nombre": "Cliente 3",
-      "apellido": "Demo 3"
+    "fecha": "7/10/2025",
+    "usuario": { "nombre": "Carla", "apellido": "Pérez" },
+    "producto": {
+      "name": "Luna",
+      "type": "Gato",
+      "breed": "Siamés"
     },
     "estado": "Pendiente",
-    "total": "210.00"
+    "total": "300.00"
   },
   {
     "id": 503,
-    "fecha": "2/10/2025",
-    "usuario": {
-      "nombre": "Cliente 4",
-      "apellido": "Demo 4"
+    "fecha": "8/10/2025",
+    "usuario": { "nombre": "Juan", "apellido": "Rodriguez" },
+    "producto": {
+      "name": "Simba",
+      "type": "Gato",
+      "breed": "Persa"
     },
-    "estado": "Enviado",
-    "total": "88.70"
+    "estado": "Cancelada",
+    "total": "350.00"
   }
 ]

@@ -1,20 +1,25 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import mockOrdenesAdmin from '../../data/ordenes.json';
-import './Admin.css'; // <-- NUEVA IMPORTACIÓN
+import './Admin.css';
 
 const GestionOrdenes = () => {
-  // ... (el resto de tu código no cambia)
   const [ordenes] = useState(mockOrdenesAdmin);
   const [filtro, setFiltro] = useState("");
   const [paginaActual, setPaginaActual] = useState(1);
   const ITEMS_POR_PAGINA = 10;
 
-  const ordenesFiltradas = ordenes.filter(o =>
-    o.usuario.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
-    o.usuario.apellido.toLowerCase().includes(filtro.toLowerCase()) ||
-    o.id.toString().includes(filtro)
-  );
+  const ordenesFiltradas = ordenes.filter(o => {
+    // Lógica de búsqueda simplificada: ahora siempre es un objeto
+    const mascotaTexto = `${o.producto.name} ${o.producto.type} ${o.producto.breed}`;
+
+    return (
+      o.usuario.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
+      o.usuario.apellido.toLowerCase().includes(filtro.toLowerCase()) ||
+      mascotaTexto.toLowerCase().includes(filtro.toLowerCase()) ||
+      o.id.toString().includes(filtro)
+    );
+  });
 
   const totalPaginas = Math.ceil(ordenesFiltradas.length / ITEMS_POR_PAGINA);
   const ordenesPaginadas = ordenesFiltradas.slice(
@@ -28,7 +33,7 @@ const GestionOrdenes = () => {
        <div className="admin-filter-bar">
         <input
           type="text"
-          placeholder="Filtrar por ID de orden o nombre/apellido de cliente..."
+          placeholder="Filtrar por ID, cliente o mascota..."
           value={filtro}
           onChange={(e) => { setFiltro(e.target.value); setPaginaActual(1); }}
           className="admin-filter-input"
@@ -40,6 +45,7 @@ const GestionOrdenes = () => {
             <th>ID Orden</th>
             <th>Fecha</th>
             <th>Cliente</th>
+            <th>Mascota</th>
             <th>Estado</th>
             <th>Total</th>
             <th>Acciones</th>
@@ -51,6 +57,8 @@ const GestionOrdenes = () => {
               <td>{orden.id}</td>
               <td>{orden.fecha}</td>
               <td>{`${orden.usuario.nombre} ${orden.usuario.apellido}`}</td>
+              {/* Lógica de renderizado simplificada */}
+              <td>{`${orden.producto.name} (${orden.producto.breed})`}</td>
               <td>{orden.estado}</td>
               <td>${orden.total}</td>
               <td>

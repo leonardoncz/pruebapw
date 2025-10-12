@@ -129,3 +129,41 @@
   font-weight: 700;
 }
 
+/* Pega esto al final de Admin.css */
+
+.btn-agregar {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+.btn-agregar:hover {
+  background-color: #218838;
+}
+
+.btn-accion {
+  padding: 6px 12px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: white;
+  font-size: 0.9rem;
+  margin-right: 5px;
+  border: none;
+  cursor: pointer;
+}
+.btn-editar {
+  background-color: #007bff;
+}
+.btn-editar:hover {
+  background-color: #0056b3;
+}
+.btn-eliminar {
+  background-color: #dc3545;
+}
+.btn-eliminar:hover {
+  background-color: #c82333;
+}
+

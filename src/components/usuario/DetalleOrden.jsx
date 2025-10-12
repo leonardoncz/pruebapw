@@ -1,25 +1,25 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import './DetalleOrden.css'; // <-- NUEVA IMPORTACIÓN
+import './DetalleOrden.css';
 
 const DetalleOrden = () => {
-  // ... (el resto de tu código no cambia)
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [orden, setOrden] = useState(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
+    // Datos simulados actualizados para que solo sean mascotas
     const ordenSimulada = {
       id,
       fecha: "2025-10-01",
       estado: "Pendiente",
-      total: 59.99,
-      productos: [
-        { nombre: "Pelota para perro", cantidad: 2, precio: 10.5 },
-        { nombre: "Comida para gato", cantidad: 1, precio: 38.99 },
-      ],
+      total: 250.00,
+      producto: {
+        name: "Max",
+        type: "Perro",
+        breed: "Labrador"
+      },
     };
     setOrden(ordenSimulada);
   }, [id]);
@@ -36,23 +36,22 @@ const DetalleOrden = () => {
     }
   };
 
-  if (!orden) return <p className="detalle-loading">Cargando orden...</p>;
+  if (!orden) return <p>Cargando orden...</p>;
 
   return (
     <div className="detalle-container">
       <h2 className="detalle-title">Detalle de Orden #{orden.id}</h2>
       <p><strong>Fecha:</strong> {orden.fecha}</p>
       <p><strong>Estado:</strong> {orden.estado}</p>
-      <p><strong>Total:</strong> ${orden.total}</p>
+      <p><strong>Total:</strong> ${orden.total.toFixed(2)}</p>
 
-      <h3 className="detalle-subtitle">Productos</h3>
-      <ul className="detalle-productos">
-        {orden.productos.map((prod, idx) => (
-          <li key={idx} className="detalle-producto">
-            {prod.nombre} - Cantidad: {prod.cantidad} - Precio unitario: ${prod.precio}
-          </li>
-        ))}
-      </ul>
+      <h3 className="detalle-subtitle">Detalles de la Mascota</h3>
+      {/* Lógica de renderizado simplificada */}
+      <div className="detalle-mascota-info">
+          <p><strong>Nombre:</strong> {orden.producto.name}</p>
+          <p><strong>Tipo:</strong> {orden.producto.type}</p>
+          <p><strong>Raza:</strong> {orden.producto.breed}</p>
+      </div>
 
       {error && <p className="detalle-error">{error}</p>}
 
@@ -66,4 +65,3 @@ const DetalleOrden = () => {
 };
 
 export default DetalleOrden;
-
