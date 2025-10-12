@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { mockOrdenesAdmin } from '../../data/mockData';
+import { mockOrdenesAdmin } from '../../data/ordenes.json';
 
 const DetalleOrdenAdmin = () => {
     const { id } = useParams();

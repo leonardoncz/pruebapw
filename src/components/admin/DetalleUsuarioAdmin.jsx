@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { mockUsuarios } from '../../data/mockData';
+import { mockUsuarios } from '../../data/usuarios.json';
 
 const DetalleUsuarioAdmin = () => {
   const { id } = useParams();

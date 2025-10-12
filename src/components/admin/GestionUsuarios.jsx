@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { mockUsuarios } from '../../data/mockData'; // Suponiendo que creaste el archivo de mocks
+import { mockUsuarios } from '../../data/usuarios.json'; // Suponiendo que creaste el archivo de mocks
 
 const GestionUsuarios = () => {
   const [usuarios, setUsuarios] = useState(mockUsuarios);
