@@ -36,8 +36,9 @@ function App() {
               <Route path="/recuperar-contraseña" element={<RecuperarContraseña />} />
               <Route path="/busqueda" element={<Busqueda />} />
               <Route path="/carrito" element={<CarritoPage />} />
+              <Route path="/confirmacion" element={<ConfirmacionPage />} />
               <Route path="/detalle-orden-admin" element={<DetalleOrdenAdmin />} />
-              <Route path="/detalle-orden-admin" element={<DetalleUsuarioAdmin />} />
+              <Route path="/detalle-usuario-admin" element={<DetalleUsuarioAdmin />} />
               <Route path="/gestion-ordenes" element={<GestionOrdenes />} />
               <Route path="/gestion-usuarios" element={<GestionUsuarios />} />
             
@@ -55,9 +56,7 @@ function App() {
                <Route 
                 path="/panel" 
                 element={
-                  <RutaProtegida>
-                    <PanelUsuario />
-                  </RutaProtegida>
+                  <RutaProtegida><PanelUsuario /></RutaProtegida>
                 } 
               />
               <Route 
