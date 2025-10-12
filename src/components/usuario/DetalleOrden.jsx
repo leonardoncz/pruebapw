@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import './DetalleOrden.css'; // <-- NUEVA IMPORTACIÓN
 
 const DetalleOrden = () => {
+  // ... (el resto de tu código no cambia)
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -55,7 +57,7 @@ const DetalleOrden = () => {
       {error && <p className="detalle-error">{error}</p>}
 
       {orden.estado !== "Cancelada" && (
-        <button onClick={handleCancelar} className="btn-primary detalle-btn">
+        <button onClick={handleCancelar} className="detalle-btn">
           Cancelar Orden
         </button>
       )}
@@ -64,3 +66,4 @@ const DetalleOrden = () => {
 };
 
 export default DetalleOrden;
+

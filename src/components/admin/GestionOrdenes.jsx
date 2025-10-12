@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import mockOrdenesAdmin from '../../data/ordenes.json'; // Suponiendo que creaste el archivo de mocks
+import mockOrdenesAdmin from '../../data/ordenes.json';
+import './Admin.css'; // <-- NUEVA IMPORTACIÓN
 
 const GestionOrdenes = () => {
+  // ... (el resto de tu código no cambia)
   const [ordenes] = useState(mockOrdenesAdmin);
   const [filtro, setFiltro] = useState("");
   const [paginaActual, setPaginaActual] = useState(1);

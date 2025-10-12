@@ -1,0 +1,131 @@
+/* Estilos compartidos para el panel de Administrador */
+.admin-container {
+  max-width: 900px;
+  background: #fdfdff;
+  border-radius: 20px;
+  box-shadow: 0 0 16px rgba(118, 134, 160, 0.4);
+  font-family: 'Roboto Slab', serif;
+  margin: 20px auto;
+  padding: 25px 35px;
+}
+
+.admin-title {
+  text-align: center;
+  font-weight: 900;
+  color: #3d5a80;
+  margin-bottom: 20px;
+}
+
+.admin-filter-bar {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.admin-filter-input {
+  padding: 10px 15px;
+  width: 50%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+}
+
+.admin-table th {
+  background-color: #f4f6f8;
+  color: #3d5a80;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.admin-btn-toggle {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.admin-btn-toggle.active {
+  background-color: #e57373; /* Rojo para desactivar */
+}
+
+.admin-btn-toggle.inactive {
+  background-color: #81c784; /* Verde para activar */
+}
+
+.admin-link {
+  text-decoration: none;
+  color: #2962ff;
+  font-weight: 700;
+}
+
+.admin-link:hover {
+  text-decoration: underline;
+}
+
+.detalle-container.admin-detalle {
+    background: #f4f6f8;
+}
+
+.admin-back-link-container {
+    text-align: center;
+    width: 100%;
+}
+
+.admin-link-back {
+    display: inline-block;
+    margin-top: 25px;
+    font-weight: bold;
+    color: #3d5a80;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.admin-link-back:hover {
+    color: #2962ff;
+    text-decoration: underline;
+}
+
+/* Estilos de paginación (usados en admin) */
+.pagination-controls {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.pagination-controls button {
+  background-color: #4070f0;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 15px;
+  margin: 0 7px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination-controls button:disabled {
+  background-color: #7a8baa;
+  cursor: default;
+}
+
+.pagination-span {
+  color: #555;
+  font-weight: 700;
+}
+

@@ -1,7 +1,9 @@
 import { useParams, Link } from "react-router-dom";
 import mockUsuarios from '../../data/usuarios.json';
+import './Admin.css'; // <-- NUEVA IMPORTACIÓN
 
 const DetalleUsuarioAdmin = () => {
+  // ... (el resto de tu código no cambia)
   const { id } = useParams();
   const usuario = mockUsuarios.find(u => u.id === parseInt(id));
 
@@ -10,7 +12,7 @@ const DetalleUsuarioAdmin = () => {
   }
 
   return (
-    <div className="detalle-container admin-detalle">
+    <div className="admin-container admin-detalle">
         <h2 className="detalle-title">Detalle de Usuario: {usuario.nombre} {usuario.apellido}</h2>
         <p><strong>ID:</strong> {usuario.id}</p>
         <p><strong>Email:</strong> {usuario.email}</p>

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// CORRECCIÓN: Se usan rutas absolutas desde /src para evitar errores de resolución.
-import { useAuth } from '/src/context/AuthContext'; 
-import '/src/components/usuario/AuthForms.css';
+
+import { useAuth } from '../../context/AuthContext'; 
+import './AuthForms.css';
 
 const Registro = () => {
   const [form, setForm] = useState({

@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import mockUsuarios from '../../data/usuarios.json'; // Suponiendo que creaste el archivo de mocks
+import mockUsuarios from '../../data/usuarios.json';
+import './Admin.css'; // <-- NUEVA IMPORTACIÓN
 
 const GestionUsuarios = () => {
+  // ... (el resto de tu código no cambia)
   const [usuarios, setUsuarios] = useState(mockUsuarios);
   const [filtro, setFiltro] = useState("");
   const [paginaActual, setPaginaActual] = useState(1);

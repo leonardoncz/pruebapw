@@ -25,7 +25,8 @@ function Home() {
   useEffect(() => {
     const nuevofiltroAnimal = todosAnimales.filter(animal => {
       const tipoMatch = filtroTipo === 'all' || animal.tipo === filtroTipo;
-      const razaMatch = filtroRaza === 'all' || animal.raza === razaMatch;
+      
+      const razaMatch = filtroRaza === 'all' || animal.raza === filtroRaza;;
       return tipoMatch && razaMatch;
     });
     setFiltroAnimal(nuevofiltroAnimal);

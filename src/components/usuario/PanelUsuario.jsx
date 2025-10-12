@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import './PanelUsuario.css'; // <-- NUEVA IMPORTACIÓN
 
 const PanelUsuario = () => {
+  // ... (el resto de tu código no cambia)
   const ordenesMock = Array.from({ length: 45 }, (_, i) => ({
     id: i + 1,
     fecha: new Date(2025, 9, i + 1).toLocaleDateString(),
@@ -16,7 +18,7 @@ const PanelUsuario = () => {
   useEffect(() => {
     const inicio = (paginaActual - 1) * ITEMS_POR_PAGINA;
     setOrdenes(ordenesMock.slice(inicio, inicio + ITEMS_POR_PAGINA));
-  }, [paginaActual]);
+  }, [paginaActual, ordenesMock]);
 
   const totalPaginas = Math.ceil(ordenesMock.length / ITEMS_POR_PAGINA);
 
@@ -35,8 +37,8 @@ const PanelUsuario = () => {
         </thead>
         <tbody>
           {ordenes.map((orden) => (
-            <tr key={orden.id} className={orden.estado === "Enviado" ? "estado-enviado" : "estado-pendiente"}>
-              <td>{orden.id}</td>
+            <tr key={orden.id}>
+              <td className={orden.estado === "Enviado" ? "estado-enviado" : "estado-pendiente"}>{orden.id}</td>
               <td>{orden.fecha}</td>
               <td>{orden.estado}</td>
               <td>${orden.total}</td>
@@ -52,7 +54,6 @@ const PanelUsuario = () => {
         <button
           onClick={() => setPaginaActual((p) => Math.max(p - 1, 1))}
           disabled={paginaActual === 1}
-          className="btn-primary"
         >
           Anterior
         </button>
@@ -62,7 +63,6 @@ const PanelUsuario = () => {
         <button
           onClick={() => setPaginaActual((p) => Math.min(p + 1, totalPaginas))}
           disabled={paginaActual === totalPaginas}
-          className="btn-primary"
         >
           Siguiente
         </button>
@@ -72,3 +72,4 @@ const PanelUsuario = () => {
 };
 
 export default PanelUsuario;
+

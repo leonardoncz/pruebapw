@@ -1,4 +1,4 @@
-/* General body and fonts */
+/* Estilos Globales de la Aplicación */
 body {
   font-family: 'Rubik', sans-serif;
   background: #e9f2f7;
@@ -11,313 +11,36 @@ h2 {
   margin-bottom: 15px;
 }
 
-
-
-
-
-/* PANEL USUARIO Styles */
-.panel-container {
-  max-width: 700px;
-  margin: 50px auto;
-  background: #fefefe;
-  padding: 25px 35px;
-  border-radius: 20px;
-  box-shadow: 0 0 16px #c5d6e9;
-  font-family: 'Roboto Slab', serif;
-}
-.panel-title {
-  text-align: center;
-  font-weight: 900;
-  color: #2a3d66;
-  margin-bottom: 20px;
-}
-.panel-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.panel-table th,
-.panel-table td {
-  padding: 10px;
-  border: 1px solid #f0f0f0;
-  text-align: center;
-}
-.estado-enviado {
-  background-color: #d3e6ff;
-  color: #4070f0;
-  font-weight: 700;
-}
-.estado-pendiente {
-  background-color: #fff4d3;
-  color: #c18700;
-  font-weight: 700;
-}
-.panel-link {
-  text-decoration: none;
-  color: #4070f0;
-  font-weight: 700;
-}
-.panel-link:hover {
-  text-decoration: underline;
-}
-.pagination-controls {
-  margin-top: 15px;
-  text-align: center;
-}
-.pagination-controls button {
-  background-color: #4070f0;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 15px;
-  margin: 0 7px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-.pagination-controls button:disabled {
-  background-color: #7a8baa;
-  cursor: default;
-}
-.pagination-span {
-  color: #555;
-  font-weight: 700;
-}
-
-/* DETALLE ORDEN Styles */
-.detalle-container {
-  max-width: 600px;
-  margin: 50px auto;
-  background: #ffffff;
-  padding: 30px 30px;
-  box-shadow: 0 0 20px #b7c3d6;
-  border-radius: 18px;
-  font-family: 'Georgia', serif;
-}
-.detalle-title {
-  font-weight: 900;
-  color: #354360;
-  text-align: center;
-  margin-bottom: 25px;
-}
-.detalle-subtitle {
-  color: #4973af;
-  margin-bottom: 12px;
-}
-.detalle-productos {
-  list-style-type: square;
-  padding-left: 18px;
-  margin-bottom: 20px;
-}
-.detalle-producto {
-  margin-bottom: 8px;
-}
-.detalle-error {
-  color: #b93328;
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-.detalle-btn {
-  display: block;
-  margin: 0 auto;
-  background-color: #db3c36;
-  color: white;
-  font-weight: 700;
-  border-radius: 16px;
-  padding: 12px 22px;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.26s ease;
-}
-.detalle-btn:hover {
-  background-color: #a12923;
-}
-
-/* EDITAR PERFIL Styles */
-.editar-container {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 30px 25px;
-  background: linear-gradient(135deg, #ffe9c6, #f8b500);
-  border-radius: 22px;
-  box-shadow: 0 12px 25px rgba(248, 181, 0, 0.4);
-  color: #673e00;
-}
-.editar-title {
-  font-weight: 900;
-  text-align: center;
-  margin-bottom: 20px;
-}
-.editar-form {
-  display: flex;
-  flex-direction: column;
-}
-.editar-input {
-  padding: 10px 14px;
-  margin-bottom: 12px;
-  border-radius: 10px;
-  border: none;
-  font-size: 1rem;
-}
-.editar-btn {
-  background-color: #f8b500;
-  padding: 14px;
-  border-radius: 15px;
-  border: none;
-  font-weight: 700;
-  cursor: pointer;
-  color: #5c4400;
-  text-transform: uppercase;
-  transition: background-color 0.3s ease;
-}
-.editar-btn:hover {
-  background-color: #d49c00;
-}
-.editar-error {
-  color: #733b0e;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-.editar-success {
-  color: #4f7c1c;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-
-.admin-title {
-  text-align: center;
-  font-weight: 900;
-  color: #3d5a80;
-  margin-bottom: 20px;
-}
-
-
-
-.admin-table th,
-.admin-table td {
-  padding: 12px 10px;
-  border-bottom: 1px solid #e0e0e0;
-  text-align: left;
-}
-.admin-table th {
-  background-color: #f4f6f8;
-  color: #3d5a80;
-}
-.admin-actions {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.admin-link {
-  text-decoration: none;
-  color: #2962ff;
-  font-weight: 700;
-}
-
-.detalle-container.admin-detalle {
-    background: #f4f6f8;
-}
-
-/* Pega esto al final de tu sección de ADMIN Styles en App.css */
-
-.admin-link-back {
-    display: inline-block;
-    margin-top: 25px;
-    font-weight: bold;
-    color: #3d5a80;
-    text-decoration: none;
-    transition: color 0.2s;
-}
-
-.admin-link-back:hover {
-    color: #2962ff;
-    text-decoration: underline;
-}
-
-.admin-back-link-container {
-    text-align: center;
-    width: 100%;
-}
-
-
-
-
-/* ADMIN Styles */
-.admin-container {
-  max-width: 900px;
-  margin: 50px auto;
-  background: #fdfdff;
-  padding: 25px 35px;
-  border-radius: 20px;
-  box-shadow: 0 0 16px rgba(118, 134, 160, 0.4);
-  font-family: 'Roboto Slab', serif;
-}
-
-.admin-filter-bar {
-  margin-bottom: 20px;
-  text-align: center;
-}
-.admin-filter-input {
-  padding: 10px 15px;
-  width: 50%;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-}
-.admin-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-
-.admin-btn-toggle {
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  cursor: pointer;
-}
-.admin-btn-toggle.active {
-  background-color: #e57373; /* Rojo para desactivar */
-}
-.admin-btn-toggle.inactive {
-  background-color: #81c784; /* Verde para activar */
-}
-.admin-link {
-  text-decoration: none;
-  color: #2962ff;
-  font-weight: 700;
-}
-.admin-link:hover {
-  text-decoration: underline;
-}
-
-.detalle-container.admin-detalle {
-    background: #f4f6f8;
-}
-
-
-
-
 #root {
   display: flex;
   flex-direction: column;
-  /* align-items: center;  <-- LO HEMOS ELIMINADO */
   width: 100%;
   min-height: 100vh;
 }
 
-.carrito-container,
-.checkout-pagina,
-.confirmacion-container,
-.home-container, 
-.busqueda-container {
+/* El tag <main> envuelve todo el contenido de la página debajo del Header */
+main {
+  flex-grow: 1; /* Ocupa el espacio vertical restante */
   width: 100%;
-  max-width: 1200px; 
-  padding: 20px;
-  margin: 20px auto;
+  display: flex; /* Ayuda a centrar los contenedores de página */
+  flex-direction: column;
 }
 
-
-/* Pega esto en tu archivo CSS principal, como App.css o index.css */
+/* Clase genérica para los contenedores principales de cada página */
+.home-container, 
+.busqueda-container,
+.carrito-container,
+.checkout-container,
+.confirmacion-container,
+.auth-page-wrapper,
+.panel-container,
+.detalle-container,
+.admin-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
 

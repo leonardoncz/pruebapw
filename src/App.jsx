@@ -36,12 +36,13 @@ function App() {
               <Route path="/recuperar-contraseña" element={<RecuperarContraseña />} />
               <Route path="/busqueda" element={<Busqueda />} />
               <Route path="/carrito" element={<CarritoPage />} />
-              <Route path="/detalle-orden-admin" element={<DetalleOrdenAdmin />} />
-              <Route path="/detalle-orden-admin" element={<DetalleUsuarioAdmin />} />
-              <Route path="/gestion-ordenes" element={<GestionOrdenes />} />
-              <Route path="/gestion-usuarios" element={<GestionUsuarios />} />
-            
+              <Route path="/confirmacion" element={<ConfirmacionPage />} />
 
+              {/* Rutas de Administrador */}
+              <Route path="/admin/usuarios" element={<GestionUsuarios />} />
+              <Route path="/admin/usuario/:id" element={<DetalleUsuarioAdmin />} />
+              <Route path="/admin/ordenes" element={<GestionOrdenes />} />
+              <Route path="/admin/orden/:id" element={<DetalleOrdenAdmin />} />
 
               {/* --- Rutas Privadas (requieren inicio de sesión) --- */}
               <Route 

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
  // Crea un archivo CSS para el header si es necesario
-import '../Header.css';
+import './Header.css';
 
 const Header = () => {
   const { usuario, logout } = useAuth();
