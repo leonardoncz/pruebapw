@@ -1,41 +1,31 @@
-/* Estilos base para la página de autenticación */
+/* src/components/usuario/AuthForms.css */
 .auth-page-wrapper {
-  width: 100%;
-  /* Clave para el centrado: ocupa al menos toda la altura de la ventana menos el header */
-  min-height: calc(100vh - 80px); 
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 40px 20px;
-  box-sizing: border-box;
-  background-color: #f8f9fa; /* Un fondo suave y limpio */
-  background-image:
-    radial-gradient(circle at 5% 15%, hsla(196, 68%, 85%, 0.3) 0%, transparent 40%),
-    radial-gradient(circle at 95% 85%, hsla(140, 68%, 85%, 0.3) 0%, transparent 40%);
+  align-items: flex-start; /* Alinea arriba para evitar que se pegue al fondo */
+  padding: 3rem 1rem;
 }
 
-/* El contenedor del formulario con la tarjeta */
 .auth-container {
-  max-width: 400px;
+  max-width: 450px;
   width: 100%;
-  padding: 30px 40px;
-  background-color: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  padding: 2.5rem;
+  background-color: var(--color-background-card);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-md);
   text-align: center;
-  border: 1px solid #e9ecef;
 }
 
 .auth-title {
   font-size: 2rem;
-  font-weight: 700;
-  color: #343a40;
-  margin-bottom: 10px;
+  margin-bottom: 0.75rem;
+  color: var(--color-primary-dark);
 }
 
 .auth-subtitle {
-  color: #6c757d;
-  margin-bottom: 30px;
+  color: var(--color-text-muted);
+  margin-bottom: 2.5rem;
+  font-size: 1rem;
 }
 
 .auth-form {
@@ -44,66 +34,58 @@
   text-align: left;
 }
 
-.auth-form label {
-  font-weight: 600;
-  color: #495057;
-  margin-bottom: 8px;
-  font-size: 0.9rem;
+.form-group { /* Añadimos esta clase para agrupar label e input */
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: var(--color-text-dark);
+  margin-bottom: 0.5rem;
+  display: block; /* Para que la etiqueta esté en su propia línea */
 }
 
 .auth-input {
-  padding: 12px 15px;
-  border: 1px solid #ced4da;
-  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
   font-size: 1rem;
-  margin-bottom: 20px;
+  width: 100%;
   transition: border-color 0.3s, box-shadow 0.3s;
+  background-color: var(--color-background-light); /* Fondo suave para inputs */
 }
 
 .auth-input:focus {
   outline: none;
-  border-color: #80bdff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 3px rgba(70, 130, 180, 0.2);
 }
 
 .auth-button {
-  padding: 12px;
+  padding: 1rem;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-  color: #fff;
+  color: var(--color-background-card); /* Texto blanco en botón */
+  background-color: var(--color-primary-light); /* Azul acero para el botón principal */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 1rem; /* Espacio antes del botón */
 }
 
 .auth-button:hover {
+  background-color: #3b74a3; /* Un tono más oscuro de azul */
   transform: translateY(-2px);
 }
 
-.login-btn {
-  background-color: #007bff;
-}
-.login-btn:hover {
-  background-color: #0056b3;
-}
-
-.register-btn {
-  background-color: #28a745;
-}
-.register-btn:hover {
-  background-color: #218838;
-}
-
-
 .auth-links {
-  margin-top: 25px;
-  font-size: 0.9rem;
-  color: #6c757d;
+  margin-top: 2rem;
+  font-size: 0.95rem;
 }
 
 .auth-links a {
-  color: #007bff;
+  color: var(--color-primary-light);
   font-weight: 600;
   text-decoration: none;
 }
@@ -113,13 +95,12 @@
 }
 
 .auth-error {
-  color: #dc3545;
-  background-color: #f8d7da;
-  border: 1px solid #f5c6cb;
-  border-radius: 8px;
-  padding: 10px;
-  margin-top: 10px;
-  text-align: center;
-  font-weight: 500;
+  color: var(--color-error);
+  background-color: rgba(220, 53, 69, 0.1); /* Fondo rojo muy claro */
+  border: 1px solid var(--color-error);
+  border-radius: var(--border-radius);
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
 }
 

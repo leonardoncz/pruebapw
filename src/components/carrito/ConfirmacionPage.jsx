@@ -12,3 +12,5 @@ export default function ConfirmacionPage() {
     </div>
   );
 }
+
+

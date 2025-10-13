@@ -1,61 +1,67 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-// CORRECCIÓN: Se usan rutas relativas para asegurar la compatibilidad.
-import { useAuth } from '../../context/AuthContext'; 
-import './AuthForms.css';
+// src/components/usuario/Login.jsx (EJEMPLO)
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import './AuthForms.css'; // Asegúrate de importar el CSS
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const { login } = useAuth(); // Usar la función de login del context
-  const navigate = useNavigate(); // Hook para redirigir
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Limpiar errores previos
-
+    setError(''); // Limpiar errores previos
     try {
-      // Intentar iniciar sesión con los datos del formulario
-      await login(email, password);
-      navigate("/"); // Redirigir a la página principal si el login es exitoso
+      const user = await login(email, password);
+      if (user.rol === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/panel');
+      }
     } catch (err) {
-      // Capturar y mostrar el error del context (ej. credenciales incorrectas)
-      setError(err.message);
+      setError(err.message || 'Error al iniciar sesión. Verifica tus credenciales.');
     }
   };
 
   return (
     <div className="auth-page-wrapper">
       <div className="auth-container">
-        <h2 className="auth-title">¡Hola de nuevo!</h2>
-        <p className="auth-subtitle">Ingresa para encontrar a tu próximo amigo.</p>
+        <h2 className="auth-title">Bienvenido de nuevo</h2>
+        <p className="auth-subtitle">Inicia sesión para encontrar a tu compañero perfecto.</p>
+        
+        {error && <div className="auth-error">{error}</div>}
+
         <form onSubmit={handleSubmit} className="auth-form">
-          <label>Email</label>
-          <input
-            className="auth-input"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            placeholder="usuario@correo.com"
-          />
-          <label>Contraseña</label>
-          <input
-            className="auth-input"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            placeholder="Tu contraseña"
-          />
-          {error && <p className="auth-error">{error}</p>}
-          {/* Se añade la clase correcta para el botón de login */ }
-          <button type="submit" className="auth-button login-btn">Entrar</button>
+          <div className="form-group">
+            <label htmlFor="email">Correo Electrónico:</label>
+            <input
+              type="email"
+              id="email"
+              className="auth-input"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Contraseña:</label>
+            <input
+              type="password"
+              id="password"
+              className="auth-input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" className="auth-button">Iniciar Sesión</button>
         </form>
         <div className="auth-links">
-          <p><Link to="/recuperar-contraseña">¿Olvidaste tu contraseña?</Link></p>
-          <p>¿No tienes una cuenta? <Link to="/registro">Regístrate</Link></p>
+          <Link to="/recuperar-contrasena">¿Olvidaste tu contraseña?</Link>
+          <p>¿No tienes una cuenta? <Link to="/registro">Regístrate aquí</Link></p>
         </div>
       </div>
     </div>
@@ -63,4 +69,3 @@ const Login = () => {
 };
 
 export default Login;
-

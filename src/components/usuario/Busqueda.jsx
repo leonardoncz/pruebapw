@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { todosAnimales } from "../data/productos"; 
 import { Link } from "react-router-dom";
+import { useMascotas } from "../../context/MascotasContext"; // Usar Contexto
 
 export default function Busqueda() {
+  const { mascotas } = useMascotas(); // Obtener mascotas del contexto
   const [busqueda, setBusqueda] = useState("");
   const [resultados, setResultados] = useState([]);
 
@@ -15,7 +16,8 @@ export default function Busqueda() {
       return;
     }
 
-    const filtrados = todosAnimales.filter((animal) =>
+    // Filtrar desde la lista de mascotas del contexto
+    const filtrados = mascotas.filter((animal) =>
       animal.name.toLowerCase().includes(texto) ||
       animal.type.toLowerCase().includes(texto) ||
       animal.breed.toLowerCase().includes(texto)
@@ -23,10 +25,10 @@ export default function Busqueda() {
     setResultados(filtrados);
   };
 
+
   return (
     <div className="busqueda-container">
       <h2>Buscar Mascotas</h2>
-
       <input
         type="text"
         value={busqueda}
@@ -54,3 +56,4 @@ export default function Busqueda() {
     </div>
   );
 }
+

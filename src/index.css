@@ -1,111 +1,79 @@
+/* src/index.css */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  /* Paleta de Colores Principal */
+  --color-primary-dark: #2F4F4F; /* Verde Oscuro - Logo y texto principal */
+  --color-primary-light: #4682B4; /* Azul Acero - Enlaces y botones primarios */
+  --color-secondary: #FFD700;   /* Dorado - Destacados, hover, acentos */
+  --color-background-light: #F0F2F5; /* Gris muy claro - Fondo general */
+  --color-background-card: #FFFFFF; /* Blanco - Fondo de tarjetas y contenedores */
+  --color-text-dark: #333333; /* Texto oscuro general */
+  --color-text-muted: #666666; /* Texto secundario, descripciones */
+  --color-border: #E0E0E0; /* Bordes suaves */
+  --color-success: #28A745; /* Verde para mensajes de éxito */
+  --color-error: #DC3545;   /* Rojo para mensajes de error */
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* Sombras y Bordes */
+  --box-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --box-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --border-radius: 8px; /* Bordes redondeados estándar */
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  /* Tipografía (Fuentes del sistema, sin instalación) */
+  --font-family-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Reseteo y Estilos Base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family-main);
+  background-color: var(--color-background-light);
+  color: var(--color-text-dark);
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
+#root {
   display: flex;
-  place-items: center;
-  min-width: 320px;
+  flex-direction: column;
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+main {
+  flex-grow: 1;
+  width: 100%;
+  max-width: 1200px; /* Ancho máximo para el contenido principal */
+  margin: 0 auto; /* Centrar el contenido */
+  padding: 2rem 1rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  margin-bottom: 1rem;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-primary-light);
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--color-secondary);
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-
-  .dashboard-cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin: 1.5rem 0;
-}
-
-.dashboard-card {
-  flex: 1;
-  min-width: 200px;
-  background: #fff;
-  border-radius: 10px;
-  padding: 1rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  text-align: center;
-}
-
-.dashboard-card h3 {
-  color: #444;
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-}
-
-.dashboard-card p {
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #2d7dd2;
-}
-
-.dashboard-chart {
-  background: #fff;
-  padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.dashboard-no-data {
-  text-align: center;
-  color: #666;
-  margin: 2rem 0;
-}
-
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  font-family: var(--font-family-main);
+  font-size: 1rem;
 }
