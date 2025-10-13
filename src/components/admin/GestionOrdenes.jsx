@@ -10,11 +10,12 @@ const GestionOrdenes = () => {
   const ITEMS_POR_PAGINA = 10;
 
   const ordenesFiltradas = ordenes.filter(o => {
-    // CORRECCIÓN: Se crea un texto de búsqueda a partir del array de productos
-    const mascotasTexto = o.productos.map(p => `${p.name} ${p.breed}`).join(' ');
+    // CORRECCIÓN: Se añade una guarda (o.productos || [])
+    // Esto asegura que si 'o.productos' es undefined, se usará un array vacío, evitando el error.
+    const mascotasTexto = (o.productos || []).map(p => `${p.name} ${p.breed}`).join(' ');
 
     return (
-      o.usuario.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
+      (o.usuario?.nombre || '').toLowerCase().includes(filtro.toLowerCase()) ||
       mascotasTexto.toLowerCase().includes(filtro.toLowerCase()) ||
       o.id.toString().includes(filtro)
     );
@@ -55,8 +56,9 @@ const GestionOrdenes = () => {
             <tr key={orden.id}>
               <td>{orden.id}</td>
               <td>{orden.fecha}</td>
-              <td>{orden.usuario.nombre}</td>
-              <td>{orden.productos.map(p => p.name).join(', ')}</td>
+              <td>{orden.usuario?.nombre || 'N/A'}</td>
+              {/* CORRECCIÓN: Se añade la misma guarda aquí por seguridad */}
+              <td>{(orden.productos || []).map(p => p.name).join(', ')}</td>
               <td>{orden.estado}</td>
               <td>${orden.total}</td>
               <td>

@@ -1,6 +1,6 @@
 // src/context/OrdenesContext.jsx
+
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import initialOrdenes from '../data/ordenes.json'; // Usado solo para la primera carga
 
 export const OrdenesContext = createContext();
 
@@ -9,17 +9,14 @@ export const useOrdenes = () => {
 };
 
 export const OrdenesProvider = ({ children }) => {
-  // Inicializamos desde localStorage o con los datos del JSON si está vacío.
+  // CORRECCIÓN: Ahora inicializa desde localStorage o con un array vacío.
   const [ordenes, setOrdenes] = useState(() => {
     const ordenesGuardadas = localStorage.getItem('ordenesDB');
-    if (ordenesGuardadas) {
-      return JSON.parse(ordenesGuardadas);
-    } else {
-      localStorage.setItem('ordenesDB', JSON.stringify(initialOrdenes));
-      return initialOrdenes;
-    }
+    // Si hay algo guardado, úsalo. Si no, empieza con una lista vacía [].
+    return ordenesGuardadas ? JSON.parse(ordenesGuardadas) : [];
   });
 
+  // Este efecto se asegura de que cualquier cambio en las órdenes se guarde.
   useEffect(() => {
     localStorage.setItem('ordenesDB', JSON.stringify(ordenes));
   }, [ordenes]);
@@ -28,7 +25,7 @@ export const OrdenesProvider = ({ children }) => {
     setOrdenes(prev => [...prev, nuevaOrden]);
   };
   
-  // Aquí podrías agregar funciones como cancelarOrden, etc.
+  // Aquí podrías agregar en el futuro más funciones como cancelarOrden(id), etc.
 
   const value = {
     ordenes,
@@ -41,4 +38,3 @@ export const OrdenesProvider = ({ children }) => {
     </OrdenesContext.Provider>
   );
 };
-
