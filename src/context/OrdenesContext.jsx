@@ -1,5 +1,4 @@
 // src/context/OrdenesContext.jsx
-
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
 export const OrdenesContext = createContext();
@@ -22,7 +21,6 @@ export const OrdenesProvider = ({ children }) => {
     setOrdenes(prev => [...prev, nuevaOrden]);
   };
 
-  // --- NUEVA FUNCIÓN AÑADIDA ---
   const cancelarOrden = (ordenId) => {
     setOrdenes(prevOrdenes =>
       prevOrdenes.map(orden =>
@@ -34,7 +32,7 @@ export const OrdenesProvider = ({ children }) => {
   const value = {
     ordenes,
     agregarOrden,
-    cancelarOrden, // Se exporta la nueva función
+    cancelarOrden,
   };
 
   return (
@@ -43,3 +41,5 @@ export const OrdenesProvider = ({ children }) => {
     </OrdenesContext.Provider>
   );
 };
+
+
