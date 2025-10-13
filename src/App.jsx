@@ -45,6 +45,10 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/registro" element={<Registro />} />
+                    <Route path="/busqueda" element={<Busqueda />} />
+                    <Route path="/recuperar-contrasena" element={<RecuperarContraseña />} />
+                    <Route path="/carrito" element={<CarritoPage />} />
+                    <Route path="/confirmacion" element={<ConfirmacionPage />} />
                     {/* ... (otras rutas públicas) ... */}
 
                     {/* --- Rutas de Administrador (Unificadas) --- */}

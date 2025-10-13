@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  
   const registro = (datosUsuario) => {
     return new Promise((resolve, reject) => {
       const usuarios = JSON.parse(localStorage.getItem('usuariosDB')) || [];
@@ -31,41 +32,69 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = (email, password) => {
-    return new Promise((resolve, reject) => {
-      const usuarios = JSON.parse(localStorage.getItem('usuariosDB')) || [];
-      const usuarioEncontrado = usuarios.find(u => u.email === email && u.password === password);
+   return new Promise((resolve, reject) => {
+      // **1. Verificación especial para el administrador**
+     if (email === 'admin@admin.com' && password === 'admin') {
+      const adminUser = {
+          email: 'admin@admin.com',
+          nombre: 'Administrador',
+           rol: 'admin' // ¡La propiedad clave que necesita tu componente Login!
+        };
+        localStorage.setItem('usuarioLogueado', JSON.stringify(adminUser));
+        setUsuario(adminUser);
+        return resolve(adminUser); // Devuelve el usuario admin
+    }
 
-      if (usuarioEncontrado) {
-        if (!usuarioEncontrado.activo) {
-          return reject(new Error("Esta cuenta ha sido desactivada."));
-        }
-        localStorage.setItem('usuarioLogueado', JSON.stringify(usuarioEncontrado));
-        setUsuario(usuarioEncontrado);
-        resolve(usuarioEncontrado);
-      } else {
-        reject(new Error("Credenciales inválidas."));
-      }
-    });
+      // **2. Lógica para usuarios normales (si no es admin)**
+     const usuarios = JSON.parse(localStorage.getItem('usuariosDB')) || [];
+     const usuarioEncontrado = usuarios.find(u => u.email === email && u.password === password);
+
+     if (usuarioEncontrado) {
+       if (!usuarioEncontrado.activo) {
+         return reject(new Error("Esta cuenta ha sido desactivada."));
+         }
+         localStorage.setItem('usuarioLogueado', JSON.stringify(usuarioEncontrado));
+         setUsuario(usuarioEncontrado);
+         resolve(usuarioEncontrado);
+       } else {
+         reject(new Error("Credenciales inválidas."));
+       }
+   });
   };
-
   const logout = () => {
     localStorage.removeItem('usuarioLogueado');
     setUsuario(null);
   };
   
-  const recuperarPassword = (email, nuevaPassword) => {
-     return new Promise((resolve, reject) => {
+  const verificarEmailExistente = (email) => {
+    return new Promise((resolve, reject) => {
         const usuarios = JSON.parse(localStorage.getItem('usuariosDB')) || [];
-        const userIndex = usuarios.findIndex(u => u.email === email);
-        if (userIndex !== -1) {
-            usuarios[userIndex].password = nuevaPassword;
-            localStorage.setItem('usuariosDB', JSON.stringify(usuarios));
-            resolve("Contraseña actualizada.");
+        const usuarioExiste = usuarios.some(u => u.email === email);
+        if (usuarioExiste) {
+            resolve(); // Éxito, el email fue encontrado.
         } else {
-            reject(new Error("Correo no registrado."));
+            reject(new Error("No se encontró cuenta para este correo."));
         }
-     });
+    });
   };
+  
+  const recuperarContraseña = (email, nuevaPassword) => {
+    // ARREGLO #2: Usar 'usuariosDB' para ser consistente
+    let usuarios = JSON.parse(localStorage.getItem('usuariosDB')) || [];
+    
+    const userIndex = usuarios.findIndex(u => u.email === email);
+
+    if (userIndex !== -1) {
+      usuarios[userIndex].password = nuevaPassword; 
+      // ARREGLO #2: Usar 'usuariosDB' para ser consistente
+      localStorage.setItem('usuariosDB', JSON.stringify(usuarios));
+      // Devolver una promesa para manejar el éxito en el componente
+      return Promise.resolve("Contraseña actualizada con éxito.");
+    } else {
+      // Devolver una promesa rechazada para manejar el error
+      return Promise.reject(new Error("Error al intentar actualizar la contraseña."));
+    }
+  };
   
   const actualizarPerfil = (data) => {
     return new Promise((resolve, reject) => {
@@ -89,7 +118,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const value = {
-    usuario, login, logout, registro, recuperarPassword, actualizarPerfil
+    usuario, login, logout, registro, actualizarPerfil, verificarEmailExistente, recuperarContraseña,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

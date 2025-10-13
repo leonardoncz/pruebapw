@@ -11,8 +11,9 @@ const RecuperarContraseña = () => {
   const [mensaje, setMensaje] = useState("");
   const [error, setError] = useState("");
   const [step, setStep] = useState(1); // Controla el paso del formulario
-  const { recuperarContraseña } = useAuth();
+  const { recuperarContraseña, verificarEmailExistente } = useAuth();
   const navigate = useNavigate();
+  
 
   // Paso 1: Validar el correo electrónico
   const handleEmailSubmit = async (e) => {
@@ -21,13 +22,12 @@ const RecuperarContraseña = () => {
     setMensaje("");
 
     try {
-      // Usamos la función de recuperación para validar si el email existe.
-      // Le pasamos una contraseña temporal que no se usará.
-      await recuperarContraseña(email, 'temp_password_check');
-      
-      setStep(2); // Avanzar al siguiente paso
+      // ¡AQUÍ ESTÁ EL CAMBIO! Usamos la función correcta.
+      await verificarEmailExistente(email);
+      setStep(2); // Si no hay error, el email existe y avanzamos.
     } catch (err) {
-      setError("No se encontró ninguna cuenta asociada a este correo electrónico.");
+      // El error vendrá del contexto si el email no se encuentra
+      setError(err.message);
     }
   };
 
