@@ -15,8 +15,14 @@ export default function CheckoutPage() {
 
   const handlePagar = (e) => {
     e.preventDefault();
+
+    // 1. Verificamos que haya un usuario y productos en el carrito
+    if (!usuario || items.length === 0) {
+      alert("No puedes proceder al pago sin iniciar sesión o sin productos en el carrito.");
+      return;
+    }
     
-    // 1. Crear el objeto de la nueva orden
+    // 2. Crear el objeto de la nueva orden
     const total = items.reduce((sum, item) => sum + (item.price || 0) * item.quantity, 0);
     
     const nuevaOrden = {
@@ -28,10 +34,10 @@ export default function CheckoutPage() {
       total: total.toFixed(2)
     };
     
-    // 2. Agregar la orden al sistema
+    // 3. Agregar la orden al sistema
     agregarOrden(nuevaOrden);
 
-    // 3. Limpiar el carrito y redirigir
+    // 4. Limpiamos el carrito y redirigimos
     limpiarCarrito();
     navigate('/confirmacion');
   };
@@ -42,12 +48,29 @@ export default function CheckoutPage() {
         <h2>Formulario de Envío</h2>
         <input type="text" placeholder="Nombre completo" required />
         <input type="text" placeholder="Dirección de envío" required />
-        <input type="email" placeholder="Correo electrónico" required />
+        <input 
+          type="email" 
+          placeholder="Correo electrónico" 
+          defaultValue={usuario?.email || ''} 
+          required 
+        />
         
         <h2>Método de Pago</h2>
         <div className="pago-tabs">
-          <button type="button" onClick={() => setMetodoPago('tarjeta')} className={metodoPago === 'tarjeta' ? 'activo' : ''}>Tarjeta</button>
-          <button type="button" onClick={() => setMetodoPago('qr')} className={metodoPago === 'qr' ? 'activo' : ''}>QR</button>
+          <button 
+            type="button" 
+            onClick={() => setMetodoPago('tarjeta')} 
+            className={metodoPago === 'tarjeta' ? 'activo' : ''}
+          >
+            Tarjeta
+          </button>
+          <button 
+            type="button" 
+            onClick={() => setMetodoPago('qr')} 
+            className={metodoPago === 'qr' ? 'activo' : ''}
+          >
+            QR
+          </button>
         </div>
 
         {metodoPago === 'tarjeta' && (
@@ -61,7 +84,7 @@ export default function CheckoutPage() {
         {metodoPago === 'qr' && (
           <div className="pago-detalles qr-code">
             <p>Escanea este código para pagar.</p>
-            
+            {/* Aquí podrías poner una imagen de un código QR */}
           </div>
         )}
         
