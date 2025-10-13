@@ -53,9 +53,9 @@ function App() {
                     <Route path="/admin/usuario/:id" element={<DetalleUsuarioAdmin />} />
                     <Route path="/admin/ordenes" element={<GestionOrdenes />} />
                     <Route path="/admin/orden/:id" element={<DetalleOrdenAdmin />} />
-                    <Route path="/admin/productos" element={<GestionProductos />} />
-                    <Route path="/admin/productos/agregar" element={<FormularioProducto />} />
-                    <Route path="/admin/productos/editar/:id" element={<FormularioProducto />} />
+                    <Route path="/admin/mascotas" element={<GestionProductos />} />
+                    <Route path="/admin/mascotas/agregar" element={<FormularioProducto />} />
+                    <Route path="/admin/mascotas/editar/:id" element={<FormularioProducto />} />
 
                     {/* --- Rutas Privadas --- */}
                     <Route path="/perfil/editar" element={<RutaProtegida><EditarPerfil /></RutaProtegida>} />
