@@ -19,6 +19,7 @@ import CheckoutPage from "./components/carrito/CheckoutPage";
 import ConfirmacionPage from "./components/carrito/ConfirmacionPage";
 import DetalleOrden from "./components/usuario/DetalleOrden";
 import RutaProtegida from "./components/RutaProtegida";
+import DetalleProducto from "./components/DetalleProducto";
 
 // Componentes de Admin
 import Dashboard from "./components/admin/DashboardAdmin";
@@ -45,7 +46,10 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/registro" element={<Registro />} />
-                    {/* ... (otras rutas públicas) ... */}
+                    <Route path="/recuperar-contraseña" element={<RecuperarContraseña />} />
+                    <Route path="/busqueda" element={<Busqueda />} />
+                    <Route path="/carrito" element={<CarritoPage />} />
+                    <Route path="/confirmacion" element={<ConfirmacionPage />} />
 
                     {/* --- Rutas de Administrador (Unificadas) --- */}
                     <Route path="/admin" element={<Dashboard />} />
@@ -56,6 +60,7 @@ function App() {
                     <Route path="/admin/mascotas" element={<GestionProductos />} />
                     <Route path="/admin/mascotas/agregar" element={<FormularioProducto />} />
                     <Route path="/admin/mascotas/editar/:id" element={<FormularioProducto />} />
+                    <Route path="/producto/:id" element={<DetalleProducto />} />
 
                     {/* --- Rutas Privadas --- */}
                     <Route path="/perfil/editar" element={<RutaProtegida><EditarPerfil /></RutaProtegida>} />

@@ -17,7 +17,8 @@ const FormularioMascota = () => {
     breed: '',
     price: 0,
     image: '',
-    birthDate: ''
+    birthDate: '',
+    description: ''
   });
 
   useEffect(() => {
@@ -27,7 +28,8 @@ const FormularioMascota = () => {
         setForm({
           ...mascotaExistente,
           price: mascotaExistente.price || 0, // Asegurar que price no sea undefined
-          birthDate: mascotaExistente.birthDate || ''
+          birthDate: mascotaExistente.birthDate || '',
+          description: mascotaExistente.description || ''
         });
       }
     }
@@ -77,6 +79,9 @@ const FormularioMascota = () => {
           <label>URL de la Imagen</label>
           <input name="image" value={form.image} onChange={handleChange} placeholder="https://ejemplo.com/imagen.jpg" required className="auth-input"/>
           
+          <label>Descripción</label>
+          <textarea name="description" value={form.description} onChange={handleChange} placeholder="Descripción de la mascota" className="auth-input"/>
+
           <button type="submit" className="auth-button login-btn">{isEditing ? 'Guardar Cambios' : 'Agregar Mascota'}</button>
         </form>
       </div>
