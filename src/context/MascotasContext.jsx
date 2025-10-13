@@ -1,44 +1,29 @@
-
 import React, { createContext, useState, useContext, useEffect } from 'react';
-// Importamos los datos iniciales solo para la primera carga
-import { todosAnimales as initialMascotas } from '../components/data/productos';
 
-// 1. Crear el contexto
-export const MascotasContext = createContext();
+const MascotasContext = createContext();
 
-// 2. Hook personalizado para facilitar su uso
+// El hook se mantiene como una exportación nombrada (named export)
 export const useMascotas = () => {
   return useContext(MascotasContext);
 };
 
-// 3. Proveedor del contexto que manejará toda la lógica
-export const MascotasProvider = ({ children }) => {
-  // Inicializamos el estado desde localStorage o con los datos iniciales
+// CORRECCIÓN 1: Se elimina 'export' de aquí para convertirlo en el default export
+const MascotasProvider = ({ children }) => {
   const [mascotas, setMascotas] = useState(() => {
     try {
       const mascotasGuardadas = localStorage.getItem('mascotasDB');
-      if (mascotasGuardadas) {
-        return JSON.parse(mascotasGuardadas);
-      } else {
-        // Si no hay nada, cargamos los datos iniciales y los guardamos
-        localStorage.setItem('mascotasDB', JSON.stringify(initialMascotas));
-        return initialMascotas;
-      }
+      return mascotasGuardadas ? JSON.parse(mascotasGuardadas) : [];
     } catch (error) {
       console.error("Error al cargar las mascotas desde localStorage", error);
-      return initialMascotas;
+      return [];
     }
   });
 
-  // Efecto para guardar en localStorage cada vez que el estado de 'mascotas' cambie
   useEffect(() => {
     localStorage.setItem('mascotasDB', JSON.stringify(mascotas));
   }, [mascotas]);
 
-  // --- Funciones CRUD (Crear, Leer, Actualizar, Eliminar) ---
-
   const agregarMascota = (nuevaMascota) => {
-    // Generamos un ID único simple basado en la fecha actual
     const mascotaConId = { ...nuevaMascota, id: Date.now() };
     setMascotas(prevMascotas => [...prevMascotas, mascotaConId]);
   };
@@ -58,10 +43,10 @@ export const MascotasProvider = ({ children }) => {
   };
 
   const getMascotaById = (id) => {
-    return mascotas.find(mascota => mascota.id === id);
+    // Se convierte el id a número para una comparación segura
+    return mascotas.find(mascota => mascota.id === parseInt(id));
   };
 
-  // El valor que compartiremos con toda la app
   const value = {
     mascotas,
     agregarMascota,
@@ -77,3 +62,5 @@ export const MascotasProvider = ({ children }) => {
   );
 };
 
+// CORRECCIÓN 2: Se añade la exportación por defecto al final del archivo
+export default MascotasProvider;

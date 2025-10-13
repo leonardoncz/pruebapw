@@ -1,32 +1,33 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 
-// Se crea el contexto para ser consumido por otros componentes.
+// 1. Crear el contexto
 export const CarritoContext = createContext();
 
+// 2. CORRECCIÓN: Crear y exportar el hook personalizado
+export const useCarrito = () => {
+  return useContext(CarritoContext);
+};
+
+// 3. Proveedor del contexto
 export function CarritoProvider({ children }) {
-  // Estado para los items en el carrito actual
   const [items, setItems] = useState(() => {
     const guardado = localStorage.getItem('carritoItems');
     return guardado ? JSON.parse(guardado) : [];
   });
 
-  // Estado para las órdenes completadas
-  const [ordenes, setOrdenes] = useState(() => {
-    const guardado = localStorage.getItem('ordenes');
+  const [guardados, setGuardados] = useState(() => {
+    const guardado = localStorage.getItem('guardadosItems');
     return guardado ? JSON.parse(guardado) : [];
   });
 
-  // Efecto para guardar el carrito en localStorage cada vez que cambia
   useEffect(() => {
     localStorage.setItem('carritoItems', JSON.stringify(items));
   }, [items]);
 
-  // Efecto para guardar las órdenes en localStorage cada vez que cambian
   useEffect(() => {
-    localStorage.setItem('ordenes', JSON.stringify(ordenes));
-  }, [ordenes]);
+    localStorage.setItem('guardadosItems', JSON.stringify(guardados));
+  }, [guardados]);
 
-  // --- Funciones del Carrito ---
   const agregarAlCarrito = (producto) => {
     setItems(prevItems => {
       const existe = prevItems.find(item => item.id === producto.id);
@@ -39,41 +40,47 @@ export function CarritoProvider({ children }) {
     });
   };
 
+  const modificarCantidad = (productoId, nuevaCantidad) => {
+    if (nuevaCantidad <= 0) {
+      eliminarDelCarrito(productoId);
+    } else {
+      setItems(prevItems =>
+        prevItems.map(item =>
+          item.id === productoId ? { ...item, quantity: nuevaCantidad } : item
+        )
+      );
+    }
+  };
+
+  const eliminarDelCarrito = (productoId) => {
+    setItems(prevItems => prevItems.filter(item => item.id !== productoId));
+  };
+  
+  const moverAGuardados = (productoId) => {
+    const itemAMover = items.find(item => item.id === productoId);
+    if (itemAMover) {
+      setGuardados(prev => [...prev, itemAMover]);
+      eliminarDelCarrito(productoId);
+    }
+  };
+
   const limpiarCarrito = () => {
     setItems([]);
   };
-  
-  // --- Funciones de Órdenes ---
-  const crearOrden = (usuarioId, total, productosDeLaOrden) => {
-    const nuevaOrden = {
-      id: Date.now(),
-      usuarioId: usuarioId,
-      fecha: new Date().toLocaleDateString(),
-      estado: "Pendiente",
-      total: total.toFixed(2),
-      productos: productosDeLaOrden,
-    };
-    setOrdenes(prevOrdenes => [...prevOrdenes, nuevaOrden]);
-  };
 
-  // --- ¡NUEVA FUNCIÓN PARA CANCELAR UNA ORDEN! ---
-  const cancelarOrden = (ordenId) => {
-    setOrdenes(prevOrdenes =>
-      prevOrdenes.map(orden =>
-        orden.id === ordenId ? { ...orden, estado: 'Cancelada' } : orden
-      )
-    );
+  // El valor que se comparte debe ser un objeto con todas las funciones
+  const value = {
+    items,
+    guardados,
+    agregarAlCarrito,
+    modificarCantidad,
+    eliminarDelCarrito,
+    moverAGuardados,
+    limpiarCarrito
   };
 
   return (
-    <CarritoContext.Provider value={{
-      items,
-      ordenes,
-      agregarAlCarrito,
-      limpiarCarrito,
-      crearOrden,
-      cancelarOrden, // Exponemos la nueva función
-    }}>
+    <CarritoContext.Provider value={value}>
       {children}
     </CarritoContext.Provider>
   );

@@ -1,25 +1,28 @@
-import React, { useContext } from 'react';
+// src/components/usuario/DetalleOrden.jsx
+
+import React from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { CarritoContext } from "../../context/CarritoContext.jsx";
+// CORRECCIÓN 1: Se importa el hook del contexto correcto
+import { useOrdenes } from "../../context/OrdenesContext.jsx";
+// Importamos los estilos si aún no lo has hecho
+import './DetalleOrden.css'; 
 
 const DetalleOrden = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   
-  // Obtenemos las órdenes y la función para cancelar desde el contexto
-  const { ordenes, cancelarOrden } = useContext(CarritoContext);
+  // CORRECCIÓN 2: Obtenemos las órdenes y la función desde OrdenesContext
+  const { ordenes, cancelarOrden } = useOrdenes();
   
-  // Buscamos la orden específica en nuestra lista de órdenes reales
-  // Convertimos el 'id' de la URL a número para que la comparación funcione
+  // La lógica de búsqueda ahora funciona porque busca en la lista correcta
   const orden = ordenes.find(o => o.id === parseInt(id));
 
   const handleCancelar = () => {
-    // Ya no usamos window.confirm ni alert
     cancelarOrden(orden.id);
-    navigate("/panel"); // Redirigimos al panel después de cancelar
+    alert("Tu orden ha sido cancelada.");
+    navigate("/panel");
   };
 
-  // Si la orden aún se está cargando o no se encuentra
   if (!orden) {
     return <p className="detalle-no-encontrada">Orden no encontrada o cargando...</p>;
   }
@@ -38,7 +41,7 @@ const DetalleOrden = () => {
         </div>
         <div className="info-item">
           <p>Estado</p>
-          <span className={orden.estado === "Enviado" || orden.estado === "Cancelada" ? `estado-${orden.estado.toLowerCase()}` : "estado-pendiente"}>
+          <span className={`estado-${(orden.estado || 'pendiente').toLowerCase()}`}>
             {orden.estado}
           </span>
         </div>
@@ -48,20 +51,20 @@ const DetalleOrden = () => {
         </div>
       </div>
 
-      <h3 className="detalle-productos-header">Productos en esta orden</h3>
+      <h3 className="detalle-productos-header">Mascotas en esta orden</h3>
       <ul className="detalle-productos-lista">
-        {orden.productos.map((prod) => (
-          <li key={prod.id} className="detalle-producto-item">
+        {(orden.productos || []).map((prod) => (
+          <li key={prod.id || prod.name} className="detalle-producto-item">
             <img src={prod.image} alt={prod.name} />
             <div className="producto-info">
               <h4>{prod.name}</h4>
               <p>Cantidad: {prod.quantity}</p>
             </div>
+            <span className="producto-precio">${(prod.price || 0).toFixed(2)}</span>
           </li>
         ))}
       </ul>
 
-      {/* Solo mostramos el botón si la orden no está ya cancelada o enviada */}
       {orden.estado === "Pendiente" && (
         <div className="detalle-acciones">
           <button onClick={handleCancelar} className="detalle-boton-cancelar">

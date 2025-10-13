@@ -1,12 +1,14 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
-import { CarritoContext } from "../../context/CarritoContext.jsx";
+// CORRECCIÓN 1: Se importa el hook para obtener TODAS las órdenes
+import { useOrdenes } from "../../context/OrdenesContext.jsx";
 import './PanelUsuario.css';
 
 const PanelUsuario = () => {
   const { usuario } = useAuth();
-  const { ordenes } = useContext(CarritoContext);
+  // CORRECCIÓN 2: Se usa el contexto correcto
+  const { ordenes } = useOrdenes();
   
   const [ordenesDelUsuario, setOrdenesDelUsuario] = useState([]);
   const [ordenesPaginadas, setOrdenesPaginadas] = useState([]);
@@ -15,6 +17,7 @@ const PanelUsuario = () => {
 
   useEffect(() => {
     if (usuario && ordenes) {
+      // Esta lógica de filtrado ahora funcionará porque guardamos el 'usuarioId'
       const ordenesFiltradas = ordenes.filter(
         (orden) => orden.usuarioId === usuario.id
       );
@@ -35,7 +38,6 @@ const PanelUsuario = () => {
     return <p>Cargando panel...</p>;
   }
 
-  // Función para obtener la clase CSS correcta según el estado
   const getStatusClassName = (estado) => {
     switch (estado) {
       case "Enviado":
@@ -51,7 +53,7 @@ const PanelUsuario = () => {
   return (
     <div className="panel-container">
       <h2 className="panel-title">Panel de {usuario.nombre}</h2>
-      <p className="panel-subtitle">Aquí puedes ver el historial de todas tus adopciones y pedidos.</p>
+      <p className="panel-subtitle">Aquí puedes ver el historial de todas tus compras.</p>
       
       {ordenesDelUsuario.length > 0 ? (
         <>
@@ -109,7 +111,7 @@ const PanelUsuario = () => {
       ) : (
         <div className="panel-vacio">
           <h3>¡Bienvenido!</h3>
-          <p>Aún no tienes ninguna orden registrada. ¡Anímate a adoptar a tu nuevo mejor amigo!</p>
+          <p>Aún no tienes ninguna orden registrada. ¡Anímate a comprar tu nueva mascota!</p>
           <Link to="/" className="panel-boton-explorar">Explorar Mascotas</Link>
         </div>
       )}

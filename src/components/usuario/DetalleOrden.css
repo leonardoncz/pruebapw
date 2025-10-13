@@ -1,56 +1,170 @@
-/* Estilos para la página de Detalle de Orden */
-.detalle-container {
-  max-width: 600px;
-  background: #ffffff;
-  box-shadow: 0 0 20px #b7c3d6;
-  border-radius: 18px;
-  font-family: 'Georgia', serif;
-  margin: 20px auto;
-  padding: 30px 30px;
+/* Estilos para la página de Detalle de Orden del Usuario */
+.detalle-orden-container {
+  max-width: 750px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
+  font-family: 'Rubik', sans-serif;
+  margin: 40px auto;
+  padding: 30px 40px;
 }
 
-.detalle-title {
-  font-weight: 900;
-  color: #354360;
-  text-align: center;
+.detalle-orden-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e9ecef;
+  padding-bottom: 20px;
   margin-bottom: 25px;
 }
 
-.detalle-subtitle {
-  color: #4973af;
-  margin-bottom: 12px;
-}
-
-.detalle-productos {
-  list-style-type: square;
-  padding-left: 18px;
-  margin-bottom: 20px;
-}
-
-.detalle-producto {
-  margin-bottom: 8px;
-}
-
-.detalle-error {
-  color: #b93328;
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-
-.detalle-btn {
-  display: block;
-  margin: 20px auto 0;
-  background-color: #db3c36;
-  color: white;
+.detalle-orden-title {
+  font-size: 1.8rem;
   font-weight: 700;
-  border-radius: 16px;
-  padding: 12px 22px;
+  color: #212529;
+  margin: 0;
+}
+
+.detalle-boton-volver {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  color: #495057;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.detalle-boton-volver:hover {
+  background-color: #e9ecef;
+  border-color: #ced4da;
+}
+
+.detalle-orden-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+.info-item {
+  text-align: center;
+}
+
+.info-item p {
+  margin: 0 0 5px;
+  color: #6c757d;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.info-item strong {
+  font-size: 1.1rem;
+  color: #212529;
+}
+
+/* Estilos para los spans de estado */
+.info-item span {
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.estado-pendiente {
+  background-color: #fff3cd;
+  color: #856404;
+}
+.estado-enviado {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+.estado-cancelada {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.detalle-productos-header {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 15px;
+}
+
+.detalle-productos-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.detalle-producto-item {
+  display: flex;
+  align-items: center;
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 12px;
+}
+
+.detalle-producto-item img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.producto-info {
+  flex-grow: 1;
+}
+
+.producto-info h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.producto-info p {
+  margin: 5px 0 0;
+  color: #6c757d;
+}
+
+.producto-precio {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.detalle-acciones {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e9ecef;
+}
+
+.detalle-boton-cancelar {
+  background-color: #dc3545;
+  color: white;
   border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.26s ease;
+  transition: background-color 0.2s ease;
 }
 
-.detalle-btn:hover {
-  background-color: #a12923;
+.detalle-boton-cancelar:hover {
+  background-color: #c82333;
 }
 
+.detalle-no-encontrada {
+  text-align: center;
+  padding: 50px;
+  font-size: 1.2rem;
+  color: #6c757d;
+}

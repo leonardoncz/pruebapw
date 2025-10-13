@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CarritoProvider } from "./context/CarritoContext";
 import { AuthProvider } from "./context/AuthContext";
-import { MascotasProvider } from "./context/MascotasContext";
+import MascotasProvider from "./context/MascotasContext"; 
 import { UsuariosProvider } from "./context/UsuariosContext";
 import { OrdenesProvider } from "./context/OrdenesContext";
 
