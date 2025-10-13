@@ -10,6 +10,7 @@ const Registro = () => {
     email: "",
     password: "",
     confirmarPassword: "",
+    pais: "",
   });
   const [error, setError] = useState("");
   const { registro } = useAuth(); 
@@ -32,8 +33,12 @@ const Registro = () => {
     }
 
     try {
-      await registro({ nombre: form.nombre, email: form.email, password: form.password });
-      alert("¡Registro exitoso! Ahora serás redirigido para iniciar sesión.");
+      await registro({ 
+          nombre: form.nombre, 
+          email: form.email, 
+          password: form.password,
+          pais: form.pais
+      });
       navigate("/login"); 
     } catch (err) {
       setError(err.message);
@@ -65,6 +70,16 @@ const Registro = () => {
             onChange={handleChange}
             required
             placeholder="usuario@correo.com"
+          />
+          <label>País</label>
+          <input
+            className="auth-input"
+            type="text"
+            name="pais"
+            value={form.pais}
+            onChange={handleChange}
+            required
+            placeholder="Ej: Perú"
           />
           <label>Contraseña</label>
           <input

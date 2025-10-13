@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import mockUsuarios from '../../data/usuarios.json';
-import './Admin.css'; // <-- NUEVA IMPORTACIÓN
+import { useUsuarios } from '../../context/UsuariosContext';
+import './Admin.css';
 
 const GestionUsuarios = () => {
-  // ... (el resto de tu código no cambia)
-  const [usuarios, setUsuarios] = useState(mockUsuarios);
+  const { usuarios, toggleActivo } = useUsuarios();
+
   const [filtro, setFiltro] = useState("");
   const [paginaActual, setPaginaActual] = useState(1);
   const ITEMS_POR_PAGINA = 10;
 
+  // CORRECCIÓN: Se filtra por 'pais' en lugar de 'apellido'
   const usuariosFiltrados = usuarios.filter(u =>
     u.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
-    u.apellido.toLowerCase().includes(filtro.toLowerCase()) ||
+    (u.pais || '').toLowerCase().includes(filtro.toLowerCase()) || // Se usa (u.pais || '') por seguridad
+    u.email.toLowerCase().includes(filtro.toLowerCase()) ||
     u.id.toString().includes(filtro)
   );
 
@@ -22,17 +24,14 @@ const GestionUsuarios = () => {
     paginaActual * ITEMS_POR_PAGINA
   );
 
-  const toggleActivo = (id) => {
-    setUsuarios(usuarios.map(u => u.id === id ? { ...u, activo: !u.activo } : u));
-  };
-
   return (
     <div className="admin-container">
       <h2 className="admin-title">Gestión de Usuarios</h2>
       <div className="admin-filter-bar">
         <input
           type="text"
-          placeholder="Filtrar por ID, nombre o apellido..."
+          // CORRECCIÓN: El placeholder ahora incluye 'país'
+          placeholder="Filtrar por ID, nombre, email o país..."
           value={filtro}
           onChange={(e) => { setFiltro(e.target.value); setPaginaActual(1); }}
           className="admin-filter-input"
@@ -43,8 +42,9 @@ const GestionUsuarios = () => {
           <tr>
             <th>ID</th>
             <th>Nombre</th>
-            <th>Apellido</th>
             <th>Email</th>
+            {/* CORRECCIÓN: La columna ahora es 'País' */}
+            <th>País</th>
             <th>Estado</th>
             <th>Acciones</th>
           </tr>
@@ -54,8 +54,9 @@ const GestionUsuarios = () => {
             <tr key={usuario.id}>
               <td>{usuario.id}</td>
               <td>{usuario.nombre}</td>
-              <td>{usuario.apellido}</td>
               <td>{usuario.email}</td>
+              {/* CORRECCIÓN: Se muestra el campo 'pais' */}
+              <td>{usuario.pais}</td>
               <td>{usuario.activo ? "Activo" : "Inactivo"}</td>
               <td className="admin-actions">
                 <button onClick={() => toggleActivo(usuario.id)} className={`admin-btn-toggle ${usuario.activo ? 'active' : 'inactive'}`}>

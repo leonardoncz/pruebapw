@@ -1,22 +1,21 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import mockOrdenesAdmin from '../../data/ordenes.json';
+import { useOrdenes } from '../../context/OrdenesContext';
 import './Admin.css';
 
 const GestionOrdenes = () => {
-  const [ordenes] = useState(mockOrdenesAdmin);
+  const { ordenes } = useOrdenes();
   const [filtro, setFiltro] = useState("");
   const [paginaActual, setPaginaActual] = useState(1);
   const ITEMS_POR_PAGINA = 10;
 
   const ordenesFiltradas = ordenes.filter(o => {
-    // Lógica de búsqueda simplificada: ahora siempre es un objeto
-    const mascotaTexto = `${o.producto.name} ${o.producto.type} ${o.producto.breed}`;
+    // CORRECCIÓN: Se crea un texto de búsqueda a partir del array de productos
+    const mascotasTexto = o.productos.map(p => `${p.name} ${p.breed}`).join(' ');
 
     return (
       o.usuario.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
-      o.usuario.apellido.toLowerCase().includes(filtro.toLowerCase()) ||
-      mascotaTexto.toLowerCase().includes(filtro.toLowerCase()) ||
+      mascotasTexto.toLowerCase().includes(filtro.toLowerCase()) ||
       o.id.toString().includes(filtro)
     );
   });
@@ -45,7 +44,7 @@ const GestionOrdenes = () => {
             <th>ID Orden</th>
             <th>Fecha</th>
             <th>Cliente</th>
-            <th>Mascota</th>
+            <th>Mascotas</th>
             <th>Estado</th>
             <th>Total</th>
             <th>Acciones</th>
@@ -56,9 +55,8 @@ const GestionOrdenes = () => {
             <tr key={orden.id}>
               <td>{orden.id}</td>
               <td>{orden.fecha}</td>
-              <td>{`${orden.usuario.nombre} ${orden.usuario.apellido}`}</td>
-              {/* Lógica de renderizado simplificada */}
-              <td>{`${orden.producto.name} (${orden.producto.breed})`}</td>
+              <td>{orden.usuario.nombre}</td>
+              <td>{orden.productos.map(p => p.name).join(', ')}</td>
               <td>{orden.estado}</td>
               <td>${orden.total}</td>
               <td>

@@ -1,18 +1,38 @@
 import React, { useState, useContext } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import { CarritoContext } from '../../context/CarritoContext';
 import { useNavigate } from 'react-router-dom';
+import { useOrdenes } from '../../context/OrdenesContext';
 import './CheckoutPage.css';
 
 export default function CheckoutPage() {
-  const [metodoPago, setMetodoPago] = useState('tarjeta');
-  const { limpiarCarrito } = useContext(CarritoContext);
+
+  const { usuario } = useAuth();
+  const { items, limpiarCarrito } = useContext(CarritoContext);
+  const { agregarOrden } = useOrdenes(); // <-- USAR
   const navigate = useNavigate();
+  const [metodoPago, setMetodoPago] = useState('tarjeta');
 
   const handlePagar = (e) => {
     e.preventDefault();
+    
+    // 1. Crear el objeto de la nueva orden
+    const total = items.reduce((sum, item) => sum + (item.price || 0) * item.quantity, 0);
+    
+    const nuevaOrden = {
+      id: Date.now(),
+      fecha: new Date().toLocaleDateString('es-PE'), // Formato de fecha local
+      usuario: { nombre: usuario.nombre}, // Asumimos que no hay apellido
+      productos: items, // Guardamos todos los items del carrito
+      estado: "Pendiente",
+      total: total.toFixed(2)
+    };
+    
+    // 2. Agregar la orden al sistema
+    agregarOrden(nuevaOrden);
 
+    // 3. Limpiar el carrito y redirigir
     limpiarCarrito();
-
     navigate('/confirmacion');
   };
 
@@ -50,3 +70,4 @@ export default function CheckoutPage() {
     </div>
   );
 }
+
