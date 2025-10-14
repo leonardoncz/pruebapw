@@ -22,34 +22,38 @@ const MascotasProvider = ({ children }) => {
     localStorage.setItem('mascotasDB', JSON.stringify(mascotas));
   }, [mascotas]);
 
-  // CORRECCIÓN: La función ahora maneja archivos de imagen
+  // Agregar mascota y retornar la nueva para poder usarla al asociar categorías
   const agregarMascota = (nuevaMascota) => {
-    // Si la imagen es un objeto File, crea una URL para ella.
-    // Si no, usa el valor que ya tenga (por si acaso).
     const imageUrl = nuevaMascota.image instanceof File 
       ? URL.createObjectURL(nuevaMascota.image) 
       : nuevaMascota.image;
 
-    const mascotaConIdYUrl = { ...nuevaMascota, id: Date.now(), image: imageUrl };
+    const mascotaConIdYUrl = { 
+      ...nuevaMascota, 
+      id: Date.now(), 
+      image: imageUrl, 
+      categoriaId: nuevaMascota.categoriaId || null 
+    };
+
     setMascotas(prevMascotas => [...prevMascotas, mascotaConIdYUrl]);
+    return mascotaConIdYUrl; // 🔹 Retorna la mascota agregada
   };
 
-  // CORRECCIÓN: La función ahora maneja archivos de imagen al actualizar
+  // Actualizar mascota y retornar el objeto actualizado
   const actualizarMascota = (mascotaActualizada) => {
     let mascotaFinal = { ...mascotaActualizada };
 
-    // Solo crea una nueva URL si se subió un nuevo archivo.
-    // Si 'image' es un string, significa que no se cambió la imagen.
     if (mascotaActualizada.image instanceof File) {
-      const imageUrl = URL.createObjectURL(mascotaActualizada.image);
-      mascotaFinal.image = imageUrl;
+      mascotaFinal.image = URL.createObjectURL(mascotaActualizada.image);
     }
-    
+
     setMascotas(prevMascotas => 
       prevMascotas.map(mascota => 
         mascota.id === mascotaFinal.id ? mascotaFinal : mascota
       )
     );
+
+    return mascotaFinal; 
   };
 
   const eliminarMascota = (id) => {
@@ -62,12 +66,17 @@ const MascotasProvider = ({ children }) => {
     return mascotas.find(mascota => mascota.id === parseInt(id));
   };
 
+  const getMascotasPorCategoria = (categoriaId) => {
+    return mascotas.filter(mascota => mascota.categoriaId === categoriaId);
+  };
+
   const value = {
     mascotas,
     agregarMascota,
     actualizarMascota,
     eliminarMascota,
-    getMascotaById
+    getMascotaById,
+    getMascotasPorCategoria
   };
 
   return (
@@ -78,4 +87,3 @@ const MascotasProvider = ({ children }) => {
 };
 
 export default MascotasProvider;
-
