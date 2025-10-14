@@ -68,7 +68,6 @@ const Home = () => {
                 <p className="product-card-details">
                   Tipo: {mascota.type} | Raza: {mascota.breed}
                   <br />
-                  {/* CORRECCIÓN: Usamos el nuevo campo 'edad' */}
                   Edad: {mascota.edad || 'No especificada'}
                 </p>
                 <div className="product-card-footer">
