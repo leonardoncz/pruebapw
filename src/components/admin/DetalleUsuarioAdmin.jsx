@@ -1,48 +1,74 @@
+// src/components/admin/DetalleUsuarioAdmin.jsx
 import { useParams, Link } from "react-router-dom";
-// CORRECCIÓN 1: Se importa el hook del contexto de usuarios.
-import { useUsuarios } from '../../context/UsuariosContext'; 
+import { useUsuarios } from '../../context/UsuariosContext';
+// CAMBIO CLAVE 1: Importamos el hook para acceder a la lista de TODAS las órdenes
+import { useOrdenes } from '../../context/OrdenesContext';
 import './Admin.css';
 
 const DetalleUsuarioAdmin = () => {
   const { id } = useParams();
-  // CORRECCIÓN 2: Se obtiene la lista completa de usuarios desde el contexto.
   const { usuarios } = useUsuarios();
+  // CAMBIO CLAVE 2: Obtenemos la lista completa de órdenes
+  const { ordenes } = useOrdenes();
 
-  // CORRECCIÓN 3: Se busca el usuario por ID en la lista del contexto.
   const usuario = usuarios.find(u => u.id === parseInt(id));
+
+  // CAMBIO CLAVE 3: Filtramos la lista de órdenes para encontrar las de este usuario
+  const ordenesDelUsuario = ordenes.filter(orden => orden.usuarioId === parseInt(id));
 
   if (!usuario) {
     return <div className="admin-container"><p>Usuario no encontrado.</p></div>;
   }
 
   return (
-    <div className="admin-container admin-detalle">
-        {/* CORRECCIÓN 4: Se elimina la referencia al campo 'apellido' que ya no existe. */}
-        <h2 className="detalle-title">Detalle de Usuario: {usuario.nombre}</h2>
-        <p><strong>ID:</strong> {usuario.id}</p>
-        <p><strong>Email:</strong> {usuario.email}</p>
-        <p><strong>País:</strong> {usuario.pais || 'No especificado'}</p>
-        <p><strong>Estado:</strong> {usuario.activo ? 'Activo' : 'Inactivo'}</p>
+    <div className="admin-container">
+      <div className="admin-header">
+          <h2 className="admin-title" style={{border: 'none', margin: 0}}>Detalle de Usuario: {usuario.nombre}</h2>
+          <Link to="/admin/usuarios" className="btn btn-secondary">← Volver a la lista</Link>
+      </div>
+      
+      <div className="detalle-info-grid">
+          <p><strong>ID:</strong> {usuario.id}</p>
+          <p><strong>Email:</strong> {usuario.email}</p>
+          <p><strong>País:</strong> {usuario.pais || 'No especificado'}</p>
+          <p><strong>Estado:</strong> {usuario.activo ? 'Activo' : 'Inactivo'}</p>
+      </div>
 
-        <h3 className="detalle-subtitle">Órdenes Recientes (simulado)</h3>
-        {/* La lógica de órdenes se mantiene, asumiendo que el objeto de usuario podría tenerla */}
-        {usuario.ordenes && usuario.ordenes.length > 0 ? (
-            <ul className="detalle-productos">
-                {usuario.ordenes.slice(0, 10).map(orden => (
-                    <li key={orden.id} className="detalle-producto">
-                        Orden #{orden.id} - Fecha: {orden.fecha} - Total: ${orden.total.toFixed(2)}
-                    </li>
-                ))}
-            </ul>
-        ) : (
-            <p>Este usuario no tiene órdenes registradas.</p>
-        )}
-        <div className="admin-back-link-container">
-          <Link to="/admin/usuarios" className="admin-link-back">← Volver a la lista</Link>
-        </div>
+      <h3 style={{marginTop: '2rem'}}>Historial de Órdenes</h3>
+      
+      {/* CAMBIO CLAVE 4: Usamos nuestra nueva lista filtrada para mostrar los datos */}
+      {ordenesDelUsuario.length > 0 ? (
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>ID Orden</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+              <th>Total</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ordenesDelUsuario.map(orden => (
+              <tr key={orden.id}>
+                <td>#{orden.id}</td>
+                <td>{orden.fecha}</td>
+                <td>{orden.estado}</td>
+                <td>${orden.total}</td>
+                <td>
+                  <Link to={`/admin/orden/${orden.id}`} className="link-detalle">
+                    Ver Detalle
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>Este usuario no tiene órdenes registradas.</p>
+      )}
     </div>
   );
 };
 
 export default DetalleUsuarioAdmin;
-

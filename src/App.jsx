@@ -1,13 +1,13 @@
 // src/App.jsx
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
+import AuthProvider from "./context/AuthContext"; // Import sin llaves
 import MascotasProvider from "./context/MascotasContext";
 import { CarritoProvider } from "./context/CarritoContext";
 import { UsuariosProvider } from "./context/UsuariosContext";
 import { OrdenesProvider } from "./context/OrdenesContext";
 
-// Componentes y Páginas
+// ... (todas tus otras importaciones de componentes se mantienen igual) ...
 import Header from "./components/layout/Header";
 import Home from "./components/Home";
 import Login from "./components/usuario/Login";
@@ -22,8 +22,6 @@ import ConfirmacionPage from "./components/carrito/ConfirmacionPage";
 import DetalleOrden from "./components/usuario/DetalleOrden";
 import RutaProtegida from "./components/RutaProtegida";
 import DetalleProducto from "./components/DetalleProducto";
-
-// Componentes de Admin
 import DashboardAdmin from "./components/admin/DashboardAdmin";
 import GestionUsuarios from "./components/admin/GestionUsuarios";
 import DetalleUsuarioAdmin from "./components/admin/DetalleUsuarioAdmin";
@@ -32,11 +30,13 @@ import DetalleOrdenAdmin from "./components/admin/DetalleOrdenAdmin";
 import GestionProductos from "./components/admin/GestionProductos";
 import FormularioProducto from "./components/admin/FormularioProducto";
 
+
 // Componente para agrupar todos los providers y limpiar App.jsx
 const AppProviders = ({ children }) => {
   return (
-    <AuthProvider>
-      <UsuariosProvider>
+    // CAMBIO CLAVE: UsuariosProvider ahora envuelve a AuthProvider
+    <UsuariosProvider>
+      <AuthProvider>
         <MascotasProvider>
           <OrdenesProvider>
             <CarritoProvider>
@@ -44,8 +44,8 @@ const AppProviders = ({ children }) => {
             </CarritoProvider>
           </OrdenesProvider>
         </MascotasProvider>
-      </UsuariosProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </UsuariosProvider>
   );
 };
 
