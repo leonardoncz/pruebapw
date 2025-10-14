@@ -1,24 +1,23 @@
+// src/components/usuario/Registro.jsx
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-import { useAuth } from '../../context/AuthContext'; 
-import './AuthForms.css';
+import { useAuth } from '../../context/AuthContext';
 
 const Registro = () => {
   const [form, setForm] = useState({
-    nombre: "", 
+    nombre: "",
     email: "",
     password: "",
     confirmarPassword: "",
     pais: "",
   });
   const [error, setError] = useState("");
-  const { registro } = useAuth(); 
-  const navigate = useNavigate(); 
+  const { registro } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    setError(""); 
+    setError("");
   };
 
   const handleSubmit = async (e) => {
@@ -33,78 +32,50 @@ const Registro = () => {
     }
 
     try {
-      await registro({ 
-          nombre: form.nombre, 
-          email: form.email, 
-          password: form.password,
-          pais: form.pais
+      await registro({
+        nombre: form.nombre,
+        email: form.email,
+        password: form.password,
+        pais: form.pais
       });
-      navigate("/login"); 
+      // Redirigir al login con un mensaje de éxito
+      navigate("/login", { state: { message: "¡Registro exitoso! Ya puedes iniciar sesión." } });
     } catch (err) {
       setError(err.message);
     }
   };
 
   return (
-    <div className="auth-page-wrapper">
-      <div className="auth-container">
-        <h2 className="auth-title">Crea tu Cuenta</h2>
-        <p className="auth-subtitle">Únete a nuestra comunidad de amantes de las mascotas.</p>
-        <form onSubmit={handleSubmit} className="auth-form">
-          <label>Nombre</label>
-          <input
-            className="auth-input"
-            type="text"
-            name="nombre"
-            value={form.nombre}
-            onChange={handleChange}
-            required
-            placeholder="Tu nombre completo"
-          />
-          <label>Email</label>
-          <input
-            className="auth-input"
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-            placeholder="usuario@correo.com"
-          />
-          <label>País</label>
-          <input
-            className="auth-input"
-            type="text"
-            name="pais"
-            value={form.pais}
-            onChange={handleChange}
-            required
-            placeholder="Ej: Perú"
-          />
-          <label>Contraseña</label>
-          <input
-            className="auth-input"
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-            placeholder="Al menos 6 caracteres"
-          />
-          <label>Confirmar Contraseña</label>
-          <input
-            className="auth-input"
-            type="password"
-            name="confirmarPassword"
-            value={form.confirmarPassword}
-            onChange={handleChange}
-            required
-            placeholder="Repite la contraseña"
-          />
-          {error && <p className="auth-error">{error}</p>}
-          <button type="submit" className="auth-button register-btn">Crear Cuenta</button>
+    <div className="form-wrapper">
+      <div className="form-container">
+        <h2 className="form-title">Crea tu Cuenta</h2>
+        <p className="form-subtitle">Únete a nuestra comunidad de amantes de las mascotas.</p>
+        
+        <form onSubmit={handleSubmit}>
+          {error && <p className="form-error">{error}</p>}
+          <div className="form-group">
+            <label htmlFor="nombre">Nombre</label>
+            <input id="nombre" name="nombre" type="text" value={form.nombre} onChange={handleChange} required placeholder="Tu nombre completo" className="form-input"/>
+          </div>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input id="email" name="email" type="email" value={form.email} onChange={handleChange} required placeholder="usuario@correo.com" className="form-input"/>
+          </div>
+          <div className="form-group">
+            <label htmlFor="pais">País</label>
+            <input id="pais" name="pais" type="text" value={form.pais} onChange={handleChange} required placeholder="Ej: Perú" className="form-input"/>
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Contraseña</label>
+            <input id="password" name="password" type="password" value={form.password} onChange={handleChange} required placeholder="Al menos 6 caracteres" className="form-input"/>
+          </div>
+          <div className="form-group">
+            <label htmlFor="confirmarPassword">Confirmar Contraseña</label>
+            <input id="confirmarPassword" name="confirmarPassword" type="password" value={form.confirmarPassword} onChange={handleChange} required placeholder="Repite la contraseña" className="form-input"/>
+          </div>
+          <button type="submit" className="btn btn-primary" style={{width: '100%'}}>Crear Cuenta</button>
         </form>
-        <div className="auth-links">
+        <div className="form-links">
           <p>¿Ya tienes una cuenta? <Link to="/login">Inicia Sesión</Link></p>
         </div>
       </div>

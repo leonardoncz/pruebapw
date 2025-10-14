@@ -1,24 +1,29 @@
 /* src/index.css */
+
+/* CAMBIO: Se importa la fuente 'Nunito' de Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
 :root {
-  /* Paleta de Colores Principal */
-  --color-primary-dark: #2F4F4F; /* Verde Oscuro - Logo y texto principal */
-  --color-primary-light: #4682B4; /* Azul Acero - Enlaces y botones primarios */
-  --color-secondary: #FFD700;   /* Dorado - Destacados, hover, acentos */
-  --color-background-light: #F0F2F5; /* Gris muy claro - Fondo general */
-  --color-background-card: #FFFFFF; /* Blanco - Fondo de tarjetas y contenedores */
-  --color-text-dark: #333333; /* Texto oscuro general */
-  --color-text-muted: #666666; /* Texto secundario, descripciones */
-  --color-border: #E0E0E0; /* Bordes suaves */
-  --color-success: #28A745; /* Verde para mensajes de éxito */
-  --color-error: #DC3545;   /* Rojo para mensajes de error */
+  /* CAMBIO: Nueva Paleta de Colores Principal (Más Cálida y Amigable) */
+  --color-primary-dark: #4A2C2A;    /* Marrón Oscuro - Confiable y terrenal */
+  --color-primary-light: #F57C00;   /* Naranja Cálido - Amigable y energético */
+  --color-secondary: #FFD700;      /* Dorado - Se mantiene, combina bien */
+  --color-background-light: #F8F7F4; /* Beige muy claro - Fondo más cálido */
+  --color-background-card: #FFFFFF;  /* Blanco - Se mantiene */
+  --color-text-dark: #333333;      /* Texto oscuro general */
+  --color-text-light: #FFFFFF;      /* Texto claro para botones oscuros */
+  --color-text-muted: #6c757d;      /* Texto secundario, descripciones */
+  --color-border: #E0E0E0;          /* Bordes suaves */
+  --color-success: #28A745;        /* Verde para mensajes de éxito */
+  --color-error: #DC3545;          /* Rojo para mensajes de error */
 
   /* Sombras y Bordes */
   --box-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
   --box-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --border-radius: 8px; /* Bordes redondeados estándar */
+  --border-radius: 12px; /* Bordes un poco más redondeados y amigables */
 
-  /* Tipografía (Fuentes del sistema, sin instalación) */
-  --font-family-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* CAMBIO: Tipografía principal ahora es 'Nunito' */
+  --font-family-main: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 /* Reseteo y Estilos Base */
@@ -48,25 +53,34 @@ body {
 main {
   flex-grow: 1;
   width: 100%;
-  max-width: 1200px; /* Ancho máximo para el contenido principal */
-  margin: 0 auto; /* Centrar el contenido */
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 2rem 1rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 600;
+  font-weight: 700; /* Un poco más de peso para la nueva fuente */
   color: var(--color-primary-dark);
   margin-bottom: 1rem;
+}
+
+/* NUEVO: Detalle temático con huella para los títulos principales */
+h1::before, h2::before {
+  content: '🐾';
+  margin-right: 0.75rem;
+  color: var(--color-primary-light);
+  font-size: 0.8em; /* Un poco más pequeño que el texto del título */
 }
 
 a {
   text-decoration: none;
   color: var(--color-primary-light);
+  font-weight: 600; /* Enlaces un poco más notables */
   transition: color 0.3s ease;
 }
 
 a:hover {
-  color: var(--color-secondary);
+  color: var(--color-primary-dark);
 }
 
 button {

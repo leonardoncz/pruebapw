@@ -1,6 +1,6 @@
 /* src/components/Home.css */
 .home-page-container {
-  padding: 0 1rem; /* El padding ya viene del main en index.css, este es adicional */
+  padding: 0; /* El padding ya viene del main en index.css */
 }
 
 .hero-section {
@@ -11,7 +11,7 @@
   box-shadow: var(--box-shadow-sm);
   margin-bottom: 2rem;
   position: relative;
-  overflow: hidden; /* Para que la imagen de fondo no se salga */
+  overflow: hidden;
 }
 
 .hero-section::before {
@@ -21,16 +21,17 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('https://via.placeholder.com/1200x400/F0F2F5/FFFFFF?text=Background+Image'); /* Imagen de fondo sutil */
+  /* CORRECCIÓN: Se reemplazó la URL rota por una imagen de Unsplash */
+  background-image: url('https://images.unsplash.com/photo-1548681528-6a5c45b66b42?q=80&w=1770&auto=format&fit=crop');
   background-size: cover;
   background-position: center;
-  opacity: 0.1; /* Transparencia para que no opaque el texto */
+  opacity: 0.3;
   z-index: 0;
 }
 
 .hero-content {
   position: relative;
-  z-index: 1; /* Asegura que el contenido esté por encima del fondo */
+  z-index: 1;
 }
 
 .hero-title {
@@ -42,7 +43,7 @@
 .hero-subtitle {
   font-size: 1.2rem;
   color: var(--color-text-muted);
-  margin-bottom: 2rem;
+  margin-bottom: 0;
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
@@ -53,7 +54,7 @@
   justify-content: center;
   gap: 1.5rem;
   margin-bottom: 2.5rem;
-  flex-wrap: wrap; /* Para que los filtros se ajusten en pantallas pequeñas */
+  flex-wrap: wrap;
 }
 
 .filters-container select {
@@ -66,14 +67,14 @@
   color: var(--color-text-dark);
   cursor: pointer;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  -webkit-appearance: none; /* Eliminar estilo por defecto en WebKit */
-  -moz-appearance: none;    /* Eliminar estilo por defecto en Firefox */
-  appearance: none;         /* Eliminar estilo por defecto */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.5H18.4c-6.5%200-12.1%204.3-14.3%2010.5-2.2%206.2-1.2%2013.4%202.4%2018.6l133%20163.4c2.6%203.2%206.4%205%2010.2%205s7.6-1.8%2010.2-5l133-163.4c3.6-5.2%204.6-12.4%202.4-18.6z%22%2F%3E%3C%2Fsvg%3E');
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 10px;
-  padding-right: 30px; /* Espacio para la flecha */
+  padding-right: 30px;
 }
 
 .filters-container select:hover {
@@ -119,7 +120,7 @@
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  flex-grow: 1; /* Permite que este contenedor crezca */
 }
 
 .product-card-name {
@@ -132,39 +133,44 @@
 .product-card-details {
   font-size: 0.95rem;
   color: var(--color-text-muted);
-  margin-bottom: 1rem;
   line-height: 1.4;
-  flex-grow: 1; /* Permite que ocupe espacio antes del precio/botón */
+  flex-grow: 1; /* Empuja el footer hacia abajo */
+}
+
+.product-card-footer {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
 }
 
 .product-card-price {
   font-size: 1.3rem;
   font-weight: 700;
-  color: var(--color-primary-light); /* Azul acero para el precio */
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  color: var(--color-primary-light);
+  margin: 0;
 }
 
 .btn-view-details {
   background-color: var(--color-primary-light);
   color: var(--color-background-card);
-  padding: 0.8rem 1.5rem;
-  border-radius: 50px; /* Botones más redondeados */
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   text-align: center;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  display: block; /* Para que ocupe todo el ancho disponible */
-  width: 100%;
+  white-space: nowrap; /* Evita que el texto del botón se rompa */
 }
 
 .btn-view-details:hover {
-  background-color: #3b74a3; /* Un tono más oscuro de azul */
+  background-color: #3b74a3;
   transform: translateY(-2px);
 }
 
 .no-pets-message {
-  grid-column: 1 / -1; /* Ocupa todo el ancho de la cuadrícula */
+  grid-column: 1 / -1;
   text-align: center;
   font-size: 1.2rem;
   color: var(--color-text-muted);
@@ -188,10 +194,10 @@
     gap: 1rem;
   }
   .filters-container select {
-    width: 80%; /* Hacer los selects un poco más anchos en móvil */
+    width: 80%;
   }
   .product-grid {
-    grid-template-columns: 1fr; /* Una columna en móviles */
+    grid-template-columns: 1fr;
   }
 }
 

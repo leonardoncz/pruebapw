@@ -1,13 +1,12 @@
+// src/components/usuario/PanelUsuario.jsx
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
-// CORRECCIÓN 1: Se importa el hook para obtener TODAS las órdenes
 import { useOrdenes } from "../../context/OrdenesContext.jsx";
 import './PanelUsuario.css';
 
 const PanelUsuario = () => {
   const { usuario } = useAuth();
-  // CORRECCIÓN 2: Se usa el contexto correcto
   const { ordenes } = useOrdenes();
   
   const [ordenesDelUsuario, setOrdenesDelUsuario] = useState([]);
@@ -17,7 +16,6 @@ const PanelUsuario = () => {
 
   useEffect(() => {
     if (usuario && ordenes) {
-      // Esta lógica de filtrado ahora funcionará porque guardamos el 'usuarioId'
       const ordenesFiltradas = ordenes.filter(
         (orden) => orden.usuarioId === usuario.id
       );
@@ -39,82 +37,84 @@ const PanelUsuario = () => {
   }
 
   const getStatusClassName = (estado) => {
-    switch (estado) {
-      case "Enviado":
-        return "estado-enviado";
-      case "Cancelada":
-        return "estado-cancelada";
-      case "Pendiente":
+    switch (estado?.toLowerCase()) {
+      case "enviado":
+        return "status-enviado";
+      case "cancelada":
+        return "status-cancelada";
+      case "pendiente":
       default:
-        return "estado-pendiente";
+        return "status-pendiente";
     }
   };
 
   return (
-    <div className="panel-container">
-      <h2 className="panel-title">Panel de {usuario.nombre}</h2>
-      <p className="panel-subtitle">Aquí puedes ver el historial de todas tus compras.</p>
-      
-      {ordenesDelUsuario.length > 0 ? (
-        <>
-          <table className="panel-table">
-            <thead>
-              <tr>
-                <th>ID Orden</th>
-                <th>Fecha</th>
-                <th>Estado</th>
-                <th>Total</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ordenesPaginadas.map((orden) => (
-                <tr key={orden.id}>
-                  <td>#{orden.id}</td>
-                  <td>{orden.fecha}</td>
-                  <td>
-                    <span className={getStatusClassName(orden.estado)}>
-                      {orden.estado}
-                    </span>
-                  </td>
-                  <td>${orden.total}</td>
-                  <td>
-                    <Link to={`/orden/${orden.id}`} className="panel-link">Ver detalle</Link>
-                  </td>
+    <div className="page-container">
+      <div className="panel-container">
+        <h2 className="panel-title">Panel de {usuario.nombre}</h2>
+        <p className="panel-subtitle">Aquí puedes ver el historial de todas tus compras.</p>
+        
+        {ordenesDelUsuario.length > 0 ? (
+          <>
+            <table className="panel-table">
+              <thead>
+                <tr>
+                  <th>ID Orden</th>
+                  <th>Fecha</th>
+                  <th>Estado</th>
+                  <th>Total</th>
+                  <th>Acciones</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {ordenesPaginadas.map((orden) => (
+                  <tr key={orden.id}>
+                    <td>#{orden.id}</td>
+                    <td>{orden.fecha}</td>
+                    <td>
+                      <span className={`status-badge ${getStatusClassName(orden.estado)}`}>
+                        {orden.estado}
+                      </span>
+                    </td>
+                    <td>${orden.total}</td>
+                    <td>
+                      <Link to={`/orden/${orden.id}`} className="link-detalle">Ver detalle</Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
-          {totalPaginas > 1 && (
-            <div className="pagination-controls">
-              <button
-                onClick={() => setPaginaActual((p) => Math.max(p - 1, 1))}
-                disabled={paginaActual === 1}
-                className="pagination-button"
-              >
-                Anterior
-              </button>
-              <span className="pagination-span">
-                Página {paginaActual} de {totalPaginas}
-              </span>
-              <button
-                onClick={() => setPaginaActual((p) => Math.min(p + 1, totalPaginas))}
-                disabled={paginaActual === totalPaginas}
-                className="pagination-button"
-              >
-                Siguiente
-              </button>
-            </div>
-          )}
-        </>
-      ) : (
-        <div className="panel-vacio">
-          <h3>¡Bienvenido!</h3>
-          <p>Aún no tienes ninguna orden registrada. ¡Anímate a comprar tu nueva mascota!</p>
-          <Link to="/" className="panel-boton-explorar">Explorar Mascotas</Link>
-        </div>
-      )}
+            {totalPaginas > 1 && (
+              <div className="pagination-controls">
+                <button
+                  onClick={() => setPaginaActual((p) => Math.max(p - 1, 1))}
+                  disabled={paginaActual === 1}
+                  className="btn btn-secondary"
+                >
+                  Anterior
+                </button>
+                <span>
+                  Página {paginaActual} de {totalPaginas}
+                </span>
+                <button
+                  onClick={() => setPaginaActual((p) => Math.min(p + 1, totalPaginas))}
+                  disabled={paginaActual === totalPaginas}
+                  className="btn btn-secondary"
+                >
+                  Siguiente
+                </button>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="panel-vacio">
+            <h3>¡Bienvenido!</h3>
+            <p>Aún no tienes ninguna orden registrada. ¡Anímate a comprar tu nueva mascota!</p>
+            <Link to="/" className="btn btn-primary">Explorar Mascotas</Link>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

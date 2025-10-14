@@ -1,0 +1,121 @@
+/* src/components/usuario/Busqueda.css */
+/* Reutilizamos estilos de Home.css para las tarjetas, pero añadimos estilos propios para el layout de búsqueda */
+
+.busqueda-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.busqueda-header h1 {
+  font-size: 2.5rem;
+}
+
+.busqueda-header p {
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.busqueda-input {
+  width: 100%;
+  max-width: 600px;
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
+  border-radius: 50px;
+  border: 1px solid var(--color-border);
+  transition: all 0.3s ease;
+}
+
+.busqueda-input:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 4px rgba(70, 130, 180, 0.2);
+}
+
+.busqueda-resultados-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.no-results-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--color-text-muted);
+  padding: 3rem 0;
+}
+
+/* Copiamos las clases de product-card de Home.css para mantener consistencia visual */
+/* Esto es mejor que importar Home.css para evitar dependencias cruzadas */
+.product-card {
+  background-color: var(--color-background-card);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-sm);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none; /* Para que el Link no subraye todo */
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--box-shadow-md);
+}
+
+.product-card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.product-card-info {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.product-card-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: 0.5rem;
+}
+
+.product-card-details {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+  flex-grow: 1;
+}
+
+.product-card-footer {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.product-card-price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-primary-light);
+  margin: 0;
+}
+
+.btn-view-details {
+  background-color: var(--color-primary-light);
+  color: var(--color-background-card);
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+}
+

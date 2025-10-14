@@ -1,169 +1,103 @@
-/* Estilos Globales de la Aplicación */
-body {
-  font-family: 'Rubik', sans-serif;
-  background: #e9f2f7;
-  margin: 0;
-  padding: 0;
-  color: #333;
-}
+/* src/App.css */
+/* CORRECCIÓN: Estilos unificados para usar las variables de index.css */
 
-h2 {
-  margin-bottom: 15px;
-}
-
-#root {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  min-height: 100vh;
-}
-
-/* El tag <main> envuelve todo el contenido de la página debajo del Header */
-main {
-  flex-grow: 1; /* Ocupa el espacio vertical restante */
-  width: 100%;
-  display: flex; /* Ayuda a centrar los contenedores de página */
-  flex-direction: column;
-}
-
-/* Clase genérica para los contenedores principales de cada página */
-.home-container, 
-.busqueda-container,
-.carrito-container,
-.checkout-container,
-.confirmacion-container,
-.auth-page-wrapper,
-.panel-container,
-.detalle-container,
-.admin-container {
+/* --- CONTENEDORES DE PÁGINA --- */
+.page-container {
   width: 100%;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  padding: 20px;
+  padding: 1rem;
   box-sizing: border-box;
 }
 
-.dashboard-cards {
+.centered-container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin: 1.5rem 0;
-}
-
-.dashboard-card {
-  flex: 1;
-  min-width: 200px;
-  background: #fff;
-  border-radius: 10px;
-  padding: 1rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
   text-align: center;
 }
 
-.dashboard-card h3 {
-  color: #444;
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-}
-
-.dashboard-card p {
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #2d7dd2;
-}
-
-.dashboard-chart {
-  background: #fff;
-  padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.dashboard-no-data {
-  text-align: center;
-  color: #666;
-  margin: 2rem 0;
-}
-
-
-
-/* src/App.css (o un archivo nuevo como global-forms-buttons.css) */
-
-/* Botones genéricos */
-.btn-primary {
-  background-color: var(--color-primary);
-  color: var(--color-text-light);
+/* --- ESTILOS DE BOTONES --- */
+.btn {
   border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 25px;
+  /* CAMBIO: Bordes completamente redondeados (píldora) para un look más amigable */
+  border-radius: 50px;
+  padding: 0.8rem 1.8rem; /* Un poco más de padding horizontal */
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  text-decoration: none; /* Para usar con Link de React Router */
-  display: inline-block; /* Para que el padding y margin funcionen bien */
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  border: 2px solid transparent;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--box-shadow-md);
+}
+
+.btn-primary {
+  background-color: var(--color-primary-light); /* Naranja */
+  color: var(--color-text-light);
 }
 
 .btn-primary:hover {
-  background-color: var(--color-hover);
-  transform: translateY(-2px);
+  background-color: #e66f00; /* Naranja más oscuro */
 }
 
 .btn-secondary {
-  background-color: var(--color-secondary);
-  color: var(--color-text-dark);
-  border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 25px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  text-decoration: none;
-  display: inline-block;
+  background-color: transparent;
+  color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
 }
 
 .btn-secondary:hover {
-  background-color: #e6a72c;
-  transform: translateY(-2px);
+  background-color: var(--color-primary-dark);
+  color: var(--color-text-light);
 }
 
 .btn-danger {
-  background-color: var(--color-accent);
+  background-color: var(--color-error);
   color: var(--color-text-light);
-  border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 25px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  text-decoration: none;
-  display: inline-block;
 }
 
 .btn-danger:hover {
-  background-color: #c4644a;
-  transform: translateY(-2px);
+  background-color: #b02a37;
 }
 
-/* Estilos para formularios y campos de entrada */
+/* --- ESTILOS DE FORMULARIOS (usados en Login, Registro, Editar Perfil, etc.) --- */
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 3rem 1rem;
+}
+
 .form-container {
-  max-width: 500px;
-  margin: 3rem auto;
+  max-width: 450px;
+  width: 100%;
   padding: 2.5rem;
-  background-color: var(--color-text-light);
-  border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  background-color: var(--color-background-card);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-md);
   text-align: center;
 }
 
 .form-title {
   font-size: 2rem;
-  color: var(--color-primary);
-  margin-bottom: 2rem;
-  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--color-primary-dark);
+}
+
+.form-subtitle {
+  color: var(--color-text-muted);
+  margin-bottom: 2.5rem;
+  font-size: 1rem;
 }
 
 .form-group {
@@ -172,41 +106,58 @@ main {
 }
 
 .form-group label {
-  display: block;
+  font-weight: 600;
+  color: var(--color-text-dark);
   margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: var(--color-text-dark);
+  display: block;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
+.form-input,
+.form-select,
+.form-textarea {
   width: 100%;
-  padding: 0.9rem 1.2rem;
+  padding: 0.9rem 1rem;
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   font-size: 1rem;
-  color: var(--color-text-dark);
-  background-color: var(--color-background-light);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fff;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  font-family: var(--font-family-main);
 }
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
   outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(90, 141, 117, 0.2);
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 3px rgba(245, 124, 0, 0.2);
 }
 
-.form-group textarea {
-  resize: vertical;
-  min-height: 100px;
+.form-links {
+  margin-top: 2rem;
+  font-size: 0.95rem;
+}
+
+.form-links a {
+  font-weight: 700;
+}
+
+.form-error, .form-success {
+  border-radius: var(--border-radius);
+  padding: 0.8rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
 }
 
 .form-error {
-  color: var(--color-accent); /* Color coral para errores */
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
-  text-align: left;
+  color: var(--color-error);
+  background-color: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.2);
 }
+
+.form-success {
+  color: var(--color-success);
+  background-color: rgba(40, 167, 69, 0.1);
+  border: 1px solid rgba(40, 167, 69, 0.2);
+}
+

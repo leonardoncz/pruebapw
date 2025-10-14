@@ -1,16 +1,17 @@
-import React, { useState, useContext } from 'react';
+// src/components/carrito/CheckoutPage.jsx
+import React, { useContext } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { CarritoContext } from '../../context/CarritoContext';
 import { useNavigate } from 'react-router-dom';
 import { useOrdenes } from '../../context/OrdenesContext';
-import './CheckoutPage.css';
 
 export default function CheckoutPage() {
   const { usuario } = useAuth();
   const { items, limpiarCarrito } = useContext(CarritoContext);
   const { agregarOrden } = useOrdenes();
   const navigate = useNavigate();
-  const [metodoPago, setMetodoPago] = useState('tarjeta');
+
+  const total = items.reduce((sum, item) => sum + (item.price || 0) * item.quantity, 0);
 
   const handlePagar = (e) => {
     e.preventDefault();
@@ -20,72 +21,70 @@ export default function CheckoutPage() {
       return;
     }
     
-    const total = items.reduce((sum, item) => sum + (item.price || 0) * item.quantity, 0);
-    
     const nuevaOrden = {
       id: Date.now(),
-      // CORRECCIÓN CLAVE: Se añade el ID del usuario a la orden
       usuarioId: usuario.id,
-      fecha: new Date().toLocaleDateString('es-PE'),
-      usuario: { nombre: usuario.nombre },
+      fecha: new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }),
+      usuario: { nombre: usuario.nombre, email: usuario.email },
       productos: items,
       estado: "Pendiente",
       total: total.toFixed(2)
     };
     
     agregarOrden(nuevaOrden);
-
     limpiarCarrito();
     navigate('/confirmacion');
   };
 
+  if (items.length === 0) {
+      navigate("/");
+      return null;
+  }
+
   return (
-    <div className="checkout-container">
-      <form className="checkout-form" onSubmit={handlePagar}>
-        <h2>Formulario de Envío</h2>
-        <input type="text" placeholder="Nombre completo" required />
-        <input type="text" placeholder="Dirección de envío" required />
-        <input 
-          type="email" 
-          placeholder="Correo electrónico" 
-          defaultValue={usuario?.email || ''} 
-          required 
-        />
+    <div className="form-wrapper">
+      <div className="form-container" style={{maxWidth: '600px', textAlign: 'left'}}>
+        <h2 className="form-title" style={{textAlign: 'center'}}>Proceso de Pago</h2>
         
-        <h2>Método de Pago</h2>
-        <div className="pago-tabs">
-          <button 
-            type="button" 
-            onClick={() => setMetodoPago('tarjeta')} 
-            className={metodoPago === 'tarjeta' ? 'activo' : ''}
-          >
-            Tarjeta
-          </button>
-          <button 
-            type="button" 
-            onClick={() => setMetodoPago('qr')} 
-            className={metodoPago === 'qr' ? 'activo' : ''}
-          >
-            QR
-          </button>
+        <div className="resumen-checkout">
+            <h3>Resumen de tu compra</h3>
+            {items.map(item => (
+                <div key={item.id} className="resumen-item">
+                    <span>{item.name} (x{item.quantity})</span>
+                    <strong>${(item.price * item.quantity).toFixed(2)}</strong>
+                </div>
+            ))}
+            <hr/>
+            <div className="resumen-total">
+                <span>Total a pagar</span>
+                <strong>${total.toFixed(2)}</strong>
+            </div>
         </div>
 
-        {metodoPago === 'tarjeta' && (
-          <div className="pago-detalles">
-            <input type="text" placeholder="Número de tarjeta" required />
-            <input type="text" placeholder="MM/AA" required />
-            <input type="text" placeholder="CVC" required />
+        <form onSubmit={handlePagar}>
+          <div className="form-group">
+            <label htmlFor="nombre">Nombre completo</label>
+            <input id="nombre" type="text" defaultValue={usuario?.nombre || ''} required className="form-input"/>
           </div>
-        )}
-
-        {metodoPago === 'qr' && (
-          <div className="pago-detalles qr-code">
-            <p>Escanea este código para pagar.</p>
+          <div className="form-group">
+            <label htmlFor="direccion">Dirección de envío</label>
+            <input id="direccion" type="text" placeholder="Av. Siempre Viva 123" required className="form-input"/>
           </div>
-        )}
-        
-        <button type="submit" className="pagar-btn">Pagar ahora</button>
-      </form>
+          <div className="form-group">
+            <label htmlFor="email">Correo electrónico</label>
+            <input id="email" type="email" defaultValue={usuario?.email || ''} readOnly required className="form-input"/>
+          </div>
+          
+          <h3 style={{marginTop: '2rem', marginBottom: '1rem'}}>Método de Pago</h3>
+          {/* Aquí iría la lógica de pago con tarjeta, QR, etc. */}
+          <p className="form-subtitle">Funcionalidad de pago real por implementar. Al hacer clic se confirmará la orden.</p>
+          
+          <button type="submit" className="btn btn-primary" style={{width: '100%', marginTop: '1rem', background: 'var(--color-success)', borderColor: 'var(--color-success)'}}>
+            Confirmar y Pagar
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
+

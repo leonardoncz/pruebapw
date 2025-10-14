@@ -1,27 +1,27 @@
+// src/components/carrito/CarritoPage.jsx
 import React from "react";
-// CORRECCIÓN 1: Se importa el hook personalizado 'useCarrito'
 import { useCarrito } from "../../context/CarritoContext";
 import { Link } from "react-router-dom";
 import "./CarritoPage.css";
 
 export default function CarritoPage() {
-  // CORRECCIÓN 2: Se usa el hook 'useCarrito()' para obtener las funciones
-  const { items, modificarCantidad, eliminarDelCarrito, moverAGuardados } = useCarrito();
+  const { items, modificarCantidad, eliminarDelCarrito } = useCarrito();
 
   const total = items.reduce((sum, item) => sum + (item.price || 0) * item.quantity, 0);
 
   return (
-    <div className="carrito-container">
-      <h1>Tu Carrito de Compras</h1>
-      <div className="carrito-layout">
-        <div className="carrito-items-lista">
-          {items.length === 0 ? (
-            <div className="carrito-vacio">
-              <p>No tienes mascotas en tu carrito.</p>
-              <Link to="/" className="checkout-link">¡Encuentra a tu amigo ideal!</Link>
-            </div>
-          ) : (
-            items.map(item => (
+    <div className="page-container">
+      <h1>Tu Carrito</h1>
+      
+      {items.length === 0 ? (
+        <div className="carrito-vacio">
+          <p>No tienes mascotas en tu carrito.</p>
+          <Link to="/" className="btn btn-primary">¡Encuentra a tu amigo ideal!</Link>
+        </div>
+      ) : (
+        <div className="carrito-layout">
+          <div className="carrito-items-lista">
+            {items.map(item => (
               <div key={item.id} className="carrito-item-card">
                 <img src={item.image} alt={item.name} />
                 <div className="item-info">
@@ -29,9 +29,7 @@ export default function CarritoPage() {
                   <p>Raza: {item.breed}</p>
                   <p className="item-precio-unitario">${(item.price || 0).toFixed(2)}</p>
                   <div className="item-acciones">
-                    {/* Ahora estas funciones existirán y el error desaparecerá */}
                     <button onClick={() => eliminarDelCarrito(item.id)}>Eliminar</button>
-                    <button onClick={() => moverAGuardados(item.id)}>Guardar para después</button>
                   </div>
                 </div>
                 <div className="item-cantidad-total">
@@ -45,11 +43,9 @@ export default function CarritoPage() {
                   </p>
                 </div>
               </div>
-            ))
-          )}
-        </div>
-        
-        {items.length > 0 && (
+            ))}
+          </div>
+          
           <div className="carrito-resumen">
             <h2>Resumen del Pedido</h2>
             <div className="resumen-linea">
@@ -60,14 +56,15 @@ export default function CarritoPage() {
               <span>Envío</span>
               <span>Gratis</span>
             </div>
+            <hr />
             <div className="resumen-total">
               <span>Total</span>
               <strong>${total.toFixed(2)}</strong>
             </div>
-            <Link to="/checkout" className="checkout-link">Proceder al Pago</Link>
+            <Link to="/checkout" className="btn btn-primary" style={{width: '100%', marginTop: '1.5rem'}}>Proceder al Pago</Link>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,8 +1,7 @@
-// src/components/usuario/Login.jsx (EJEMPLO)
+// src/components/usuario/Login.jsx
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import './AuthForms.css'; // Asegúrate de importar el CSS
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -10,57 +9,61 @@ const Login = () => {
   const [error, setError] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Mensaje opcional de éxito (ej: después del registro)
+  const successMessage = location.state?.message;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(''); // Limpiar errores previos
+    setError('');
     try {
       const user = await login(email, password);
-      if (user.rol === 'admin') {
-        navigate('/admin');
-      } else {
-        navigate('/panel');
-      }
+      // Redirigir al usuario a la página que intentaba visitar, o al panel por defecto
+      const from = location.state?.from?.pathname || (user.rol === 'admin' ? '/admin' : '/panel');
+      navigate(from, { replace: true });
     } catch (err) {
       setError(err.message || 'Error al iniciar sesión. Verifica tus credenciales.');
     }
   };
 
   return (
-    <div className="auth-page-wrapper">
-      <div className="auth-container">
-        <h2 className="auth-title">Bienvenido de nuevo</h2>
-        <p className="auth-subtitle">Inicia sesión para encontrar a tu compañero perfecto.</p>
+    <div className="form-wrapper">
+      <div className="form-container">
+        <h2 className="form-title">Bienvenido de nuevo</h2>
+        <p className="form-subtitle">Inicia sesión para encontrar a tu compañero perfecto.</p>
         
-        {error && <div className="auth-error">{error}</div>}
+        {error && <div className="form-error">{error}</div>}
+        {successMessage && <div className="form-success">{successMessage}</div>}
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="email">Correo Electrónico:</label>
+            <label htmlFor="email">Correo Electrónico</label>
             <input
               type="email"
               id="email"
-              className="auth-input"
+              className="form-input"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              placeholder="usuario@correo.com"
             />
           </div>
           <div className="form-group">
-            <label htmlFor="password">Contraseña:</label>
+            <label htmlFor="password">Contraseña</label>
             <input
               type="password"
               id="password"
-              className="auth-input"
+              className="form-input"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
-          <button type="submit" className="auth-button">Iniciar Sesión</button>
+          <button type="submit" className="btn btn-primary" style={{width: '100%', marginTop: '1rem'}}>Iniciar Sesión</button>
         </form>
-        <div className="auth-links">
-          <Link to="/recuperar-contrasena">¿Olvidaste tu contraseña?</Link>
+        <div className="form-links">
+          <p><Link to="/recuperar-contraseña">¿Olvidaste tu contraseña?</Link></p>
           <p>¿No tienes una cuenta? <Link to="/registro">Regístrate aquí</Link></p>
         </div>
       </div>
@@ -69,3 +72,4 @@ const Login = () => {
 };
 
 export default Login;
+

@@ -1,0 +1,34 @@
+/* src/components/carrito/ConfirmacionPage.css */
+
+.confirmacion-box {
+  background-color: var(--color-background-card);
+  padding: 3rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-md);
+  max-width: 600px;
+}
+
+.confirmacion-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: var(--color-success);
+  color: var(--color-text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  margin: 0 auto 1.5rem;
+}
+
+.confirmacion-box h1 {
+  color: var(--color-primary-dark);
+  margin-bottom: 1rem;
+}
+
+.confirmacion-box p {
+  color: var(--color-text-muted);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
