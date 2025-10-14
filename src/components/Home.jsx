@@ -1,4 +1,3 @@
-// src/components/Home.jsx
 import React, { useState, useEffect } from "react";
 import { useMascotas } from "../context/MascotasContext";
 import './Home.css';

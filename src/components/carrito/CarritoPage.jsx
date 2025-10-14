@@ -1,4 +1,3 @@
-// src/components/carrito/CarritoPage.jsx
 import React from "react";
 import { useCarrito } from "../../context/CarritoContext";
 import { Link } from "react-router-dom";

@@ -1,9 +1,9 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
-// 1. Crear el contexto
+// Crear el contexto
 export const CarritoContext = createContext();
 
-// 2. CORRECCIÓN: Crear y exportar el hook personalizado
+// Crear y exportar el hook personalizado
 export const useCarrito = () => {
   return useContext(CarritoContext);
 };

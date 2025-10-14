@@ -161,7 +161,7 @@
   font-size: 0.9rem;
   text-align: center;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  white-space: nowrap; /* Evita que el texto del botón se rompa */
+  white-space: nowrap; 
 }
 
 .btn-view-details:hover {

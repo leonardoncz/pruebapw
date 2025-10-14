@@ -1,4 +1,3 @@
-// src/components/carrito/CheckoutPage.jsx
 import React, { useContext } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { CarritoContext } from '../../context/CarritoContext';
@@ -76,7 +75,6 @@ export default function CheckoutPage() {
           </div>
           
           <h3 style={{marginTop: '2rem', marginBottom: '1rem'}}>Método de Pago</h3>
-          {/* Aquí iría la lógica de pago con tarjeta, QR, etc. */}
           <p className="form-subtitle">Funcionalidad de pago real por implementar. Al hacer clic se confirmará la orden.</p>
           
           <button type="submit" className="btn btn-primary" style={{width: '100%', marginTop: '1rem', background: 'var(--color-success)', borderColor: 'var(--color-success)'}}>

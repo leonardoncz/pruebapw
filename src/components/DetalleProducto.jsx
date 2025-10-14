@@ -9,7 +9,7 @@ const DetalleProducto = () => {
     const { getMascotaById } = useMascotas();
     const { agregarAlCarrito } = useCarrito();
 
-    // Buscar la mascota por su ID. Se usa parseInt para asegurar que el tipo sea correcto
+    // Buscar la mascota por su ID.
     const mascota = getMascotaById(id);
 
     if (!mascota) {
