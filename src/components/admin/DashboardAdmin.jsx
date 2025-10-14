@@ -5,6 +5,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { useOrdenes } from "../../context/OrdenesContext";
 import { useUsuarios } from "../../context/UsuariosContext";
 import { useMascotas } from "../../context/MascotasContext";
+import { useCategorias } from "../../context/CategoriasContext";
 import "./Admin.css";
 
 const DashboardAdmin = () => {
@@ -12,6 +13,7 @@ const DashboardAdmin = () => {
   const { ordenes } = useOrdenes();
   const { usuarios } = useUsuarios();
   const { mascotas } = useMascotas();
+  const { categorias } = useCategorias();
 
   const [resumen, setResumen] = useState({
     totalIngresos: 0,
@@ -57,6 +59,10 @@ const DashboardAdmin = () => {
         <div className="dashboard-card clickable" onClick={() => navigate("/admin/usuarios")}>
           <h3>Gestionar Usuarios</h3>
           <p>{usuarios.length}</p>
+        </div>
+        <div className="dashboard-card clickable" onClick={() => navigate("/admin/categorias")}>
+          <h3>Gestionar Categorías</h3>
+          <p>{categorias.length}</p>
         </div>
       </div>
 
