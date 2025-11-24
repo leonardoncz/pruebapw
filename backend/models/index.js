@@ -1,0 +1,30 @@
+  "use strict";
+
+  const fs = require("fs");
+  const path = require("path");
+  const Sequelize = require("sequelize");
+  const config = require("../config/config.json");
+
+  const db = {};
+  const sequelize = new Sequelize(
+    config.development.database,
+    config.development.username,
+    config.development.password,
+    config.development
+  );
+
+  fs.readdirSync(__dirname)
+    .filter(file => file !== "index.js")
+    .forEach(file => {
+      const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+      db[model.name] = model;
+    });
+
+  Object.values(db)
+    .filter(model => model.associate)
+    .forEach(model => model.associate(db));
+
+  db.sequelize = sequelize;
+  db.Sequelize = Sequelize;
+
+  module.exports = db;

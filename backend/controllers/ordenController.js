@@ -1,28 +1,24 @@
-let { ordenes } = require('../data/db');
+const { Orden } = require("../models");
 
-const getOrdenes = (req, res) => {
-    // Podrías filtrar por usuario si viene query param ?userId=...
-    res.json(ordenes);
+const getOrdenes = async (req, res) => {
+  const ordenes = await Orden.findAll();
+  res.json(ordenes);
 };
 
-const createOrden = (req, res) => {
-    const nuevaOrden = {
-        ...req.body,
-        id: Date.now(),
-        estado: "Pendiente" // Estado por defecto
-    };
-    ordenes.push(nuevaOrden);
-    res.status(201).json(nuevaOrden);
+const createOrden = async (req, res) => {
+  const nueva = await Orden.create({
+    ...req.body,
+    estado: "Pendiente"
+  });
+  res.status(201).json(nueva);
 };
 
-const cancelarOrden = (req, res) => {
-    const orden = ordenes.find(o => o.id == req.params.id);
-    if (orden) {
-        orden.estado = "Cancelada";
-        res.json(orden);
-    } else {
-        res.status(404).json({ message: "Orden no encontrada" });
-    }
+const cancelarOrden = async (req, res) => {
+  const orden = await Orden.findByPk(req.params.id);
+  if (!orden) return res.status(404).json({ message: "No encontrada" });
+
+  await orden.update({ estado: "Cancelada" });
+  res.json(orden);
 };
 
 module.exports = { getOrdenes, createOrden, cancelarOrden };

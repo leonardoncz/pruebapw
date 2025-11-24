@@ -1,58 +1,59 @@
-const { usuarios } = require('../data/db');
+const { Usuario } = require("../models");
 
-const login = (req, res) => {
-    const { email, password } = req.body;
-    const usuario = usuarios.find(u => u.email === email && u.password === password);
+const login = async (req, res) => {
+  const { email, password } = req.body;
 
-    if (usuario) {
-        if (!usuario.activo) return res.status(403).json({ message: "Cuenta desactivada" });
-        // En un app real, aquí generarías un JWT Token
-        res.json(usuario);
-    } else {
-        res.status(401).json({ message: "Credenciales inválidas" });
-    }
+  const usuario = await Usuario.findOne({ where: { email, password } });
+
+  if (!usuario)
+    return res.status(401).json({ message: "Credenciales inválidas" });
+
+  if (!usuario.activo)
+    return res.status(403).json({ message: "Cuenta desactivada" });
+
+  res.json(usuario);
 };
 
-const registro = (req, res) => {
+const registro = async (req, res) => {
+  try {
     const { nombre, email, password, pais } = req.body;
-    
-    if (usuarios.find(u => u.email === email)) {
-        return res.status(400).json({ message: "El email ya existe" });
-    }
 
-    const nuevoUsuario = {
-        id: Date.now(),
-        nombre,
-        email,
-        password,
-        pais,
-        rol: "usuario",
-        activo: true
-    };
+    const existente = await Usuario.findOne({ where: { email } });
+    if (existente)
+      return res.status(400).json({ message: "El email ya existe" });
 
-    usuarios.push(nuevoUsuario);
-    res.status(201).json(nuevoUsuario);
+    const nuevo = await Usuario.create({
+      nombre,
+      email,
+      password,
+      pais,
+      rol: "usuario",
+      activo: true
+    });
+
+    res.status(201).json(nuevo);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
-// Actualizar perfil
-const actualizarPerfil = (req, res) => {
-    const { id } = req.params;
-    const { passwordActual, nuevoNombre, nuevoEmail, nuevaPassword } = req.body;
-    
-    const index = usuarios.findIndex(u => u.id == id);
-    if (index === -1) return res.status(404).json({ message: "Usuario no encontrado" });
+const actualizarPerfil = async (req, res) => {
+  const { id } = req.params;
+  const { passwordActual, nuevoNombre, nuevoEmail, nuevaPassword } = req.body;
 
-    const usuario = usuarios[index];
+  const usuario = await Usuario.findByPk(id);
+  if (!usuario) return res.status(404).json({ message: "Usuario no encontrado" });
 
-    if (usuario.password !== passwordActual) {
-        return res.status(401).json({ message: "Contraseña actual incorrecta" });
-    }
+  if (usuario.password !== passwordActual)
+    return res.status(401).json({ message: "Contraseña incorrecta" });
 
-    if (nuevoNombre) usuario.nombre = nuevoNombre;
-    if (nuevoEmail) usuario.email = nuevoEmail;
-    if (nuevaPassword) usuario.password = nuevaPassword;
+  await usuario.update({
+    nombre: nuevoNombre || usuario.nombre,
+    email: nuevoEmail || usuario.email,
+    password: nuevaPassword || usuario.password
+  });
 
-    res.json(usuario);
+  res.json(usuario);
 };
 
 module.exports = { login, registro, actualizarPerfil };
