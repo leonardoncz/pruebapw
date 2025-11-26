@@ -1,10 +1,8 @@
-// src/components/admin/GestionProductos.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useMascotas } from '../../context/MascotasContext';
 import './Admin.css';
 
-// CORRECCIÓN: Renombrado a GestionProductos para consistencia
 const GestionProductos = () => {
   const { mascotas, eliminarMascota } = useMascotas();
 
@@ -29,22 +27,30 @@ const GestionProductos = () => {
             <th>Nombre</th>
             <th>Tipo</th>
             <th>Raza</th>
-            {/* NUEVA COLUMNA */}
             <th>Edad</th>
             <th>Precio</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {mascotas.map(mascota => (
+          {/* Validación de seguridad: (mascotas || []) */}
+          {(mascotas || []).map(mascota => (
             <tr key={mascota.id}>
-              <td><img src={mascota.image} alt={mascota.name} /></td>
+              <td>
+                  <img 
+                    src={mascota.image || "https://via.placeholder.com/50"} 
+                    alt={mascota.name} 
+                    style={{width: '50px', height: '50px', objectFit: 'cover'}} 
+                  />
+              </td>
               <td>{mascota.name}</td>
               <td>{mascota.type}</td>
               <td>{mascota.breed}</td>
-              {/* NUEVA CELDA */}
               <td>{mascota.edad || 'N/A'}</td>
-              <td>${mascota.price ? mascota.price.toFixed(2) : '0.00'}</td>
+              
+              {/* CORRECCIÓN CRÍTICA: Number() antes de toFixed */}
+              <td>${mascota.price ? Number(mascota.price).toFixed(2) : '0.00'}</td>
+              
               <td className="admin-actions">
                 <Link to={`/admin/mascotas/editar/${mascota.id}`} className="btn btn-secondary">Modificar</Link>
                 <button onClick={() => handleEliminar(mascota.id, mascota.name)} className="btn btn-danger">Eliminar</button>
@@ -58,4 +64,3 @@ const GestionProductos = () => {
 };
 
 export default GestionProductos;
-

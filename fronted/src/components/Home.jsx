@@ -32,8 +32,10 @@ const getEtapaMascota = (edadTexto) => {
 };
 
 // --- FUNCIÓN AUXILIAR: SI ESTÁ EN ADOPCIÓN ---
+// CORRECCIÓN: Convertimos a número para asegurar que "0.00" (string) sea tratado como 0
 const isEnAdopcion = (price) => {
-  return !price || price === 0;
+  if (!price) return true;
+  return Number(price) === 0;
 };
 
 // --- CATEGORÍAS DE PRODUCTOS ---
@@ -61,7 +63,8 @@ const Home = () => {
 
   // --- EFECTO PRINCIPAL DE FILTRADO ---
   useEffect(() => {
-    let filtradas = mascotas;
+    // Validación de seguridad por si mascotas aún no ha cargado
+    let filtradas = Array.isArray(mascotas) ? mascotas : [];
 
     if (filtroTipo !== "Todos") {
       filtradas = filtradas.filter((m) => m.type === filtroTipo);
@@ -146,8 +149,9 @@ const Home = () => {
           }}
           value={filtroTipo}
         >
-          {tiposUnicos.map((tipo) => (
-            <option key={tipo} value={tipo}>
+          {tiposUnicos.map((tipo, index) => (
+             /* CORRECCIÓN: Agregamos index a la key para evitar duplicados */
+            <option key={`${tipo}-${index}`} value={tipo}>
               {tipo === "Todos" ? "Todos los Tipos" : tipo}
             </option>
           ))}
@@ -156,8 +160,9 @@ const Home = () => {
           onChange={(e) => setFiltroRaza(e.target.value)}
           value={filtroRaza}
         >
-          {razasUnicas.map((raza) => (
-            <option key={raza} value={raza}>
+          {razasUnicas.map((raza, index) => (
+            /* CORRECCIÓN: Agregamos index a la key para evitar duplicados */
+            <option key={`${raza}-${index}`} value={raza}>
               {raza === "Todas" ? "Todas las Razas" : raza}
             </option>
           ))}
@@ -189,9 +194,10 @@ const Home = () => {
                   Etapa: {getEtapaMascota(mascota.edad)} ({mascota.edad})
                 </p>
                 <p className="product-card-price">
+                  {/* CORRECCIÓN CRÍTICA: Convertimos a Number antes de toFixed */}
                   {isEnAdopcion(mascota.price)
                     ? "¡En Adopción!"
-                    : `$${mascota.price.toFixed(2)}`}
+                    : `$${Number(mascota.price).toFixed(2)}`}
                 </p>
                 <button
                   className="btn-view-details"

@@ -22,8 +22,8 @@ const Registro = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.password.length < 6) {
-      setError("La contraseña debe tener al menos 6 caracteres.");
+    if (form.password.length < 4) {
+      setError("La contraseña debe tener al menos 4 caracteres.");
       return;
     }
     if (form.password !== form.confirmarPassword) {

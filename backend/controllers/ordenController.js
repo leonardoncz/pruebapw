@@ -1,24 +1,45 @@
-const { Orden } = require("../models");
+const { Orden, Usuario } = require("../models");
 
 const getOrdenes = async (req, res) => {
-  const ordenes = await Orden.findAll();
-  res.json(ordenes);
+  try {
+    // Traemos las órdenes e incluimos los datos del Usuario dueño
+    const ordenes = await Orden.findAll({
+        include: [{ 
+            model: Usuario, 
+            as: 'usuario',
+            attributes: ['nombre', 'email'] // Solo traemos lo necesario
+        }]
+    });
+    res.json(ordenes);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 const createOrden = async (req, res) => {
-  const nueva = await Orden.create({
-    ...req.body,
-    estado: "Pendiente"
-  });
-  res.status(201).json(nueva);
+  try {
+    // El frontend envía: { usuarioId, fecha, productos, total, pago, ... }
+    const nuevaOrden = await Orden.create(req.body);
+    res.status(201).json(nuevaOrden);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 const cancelarOrden = async (req, res) => {
-  const orden = await Orden.findByPk(req.params.id);
-  if (!orden) return res.status(404).json({ message: "No encontrada" });
+  try {
+    const { id } = req.params;
+    const orden = await Orden.findByPk(id);
+    
+    if (!orden) return res.status(404).json({ message: "Orden no encontrada" });
 
-  await orden.update({ estado: "Cancelada" });
-  res.json(orden);
+    orden.estado = "Cancelada";
+    await orden.save();
+
+    res.json(orden);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 module.exports = { getOrdenes, createOrden, cancelarOrden };

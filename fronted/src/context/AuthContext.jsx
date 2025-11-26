@@ -9,7 +9,6 @@ export const useAuth = () => {
 const AuthProvider = ({ children }) => {
   const [usuario, setUsuario] = useState(null);
 
-  // Mantenemos la sesión si recarga la página (esto lee del navegador, no del backend)
   useEffect(() => {
     const usuarioGuardado = localStorage.getItem('usuarioLogueado');
     if (usuarioGuardado) {
@@ -31,12 +30,11 @@ const AuthProvider = ({ children }) => {
         throw new Error(data.message || "Error al iniciar sesión");
       }
 
-      // Si el backend responde OK, guardamos la sesión
       localStorage.setItem('usuarioLogueado', JSON.stringify(data));
       setUsuario(data);
       return data;
     } catch (error) {
-      throw error; // Lanzamos el error para que el componente Login lo muestre
+      throw error;
     }
   };
 
@@ -65,16 +63,57 @@ const AuthProvider = ({ children }) => {
     setUsuario(null);
   };
   
-  // Nota: Funciones auxiliares como actualizarPerfil necesitarían su propia ruta en backend
-  // Por ahora las dejaremos como placeholder o conectadas parcialmente
-  const actualizarPerfil = async (data) => {
-      // Aquí deberías llamar a PUT /api/auth/update/:id
-      // Implementación pendiente de conectar
-      console.log("Actualizar perfil pendiente de conectar a API");
+  // --- CORRECCIÓN: Actualizar perfil conecta con Backend y actualiza estado global ---
+  const actualizarPerfil = async (datos) => {
+    if (!usuario) return;
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/auth/update/${usuario.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datos)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) throw new Error(data.message || "Error al actualizar");
+
+        // ACTUALIZACIÓN CRÍTICA: Actualizamos localStorage y Estado Global
+        // Esto hará que el avatar cambie inmediatamente
+        localStorage.setItem('usuarioLogueado', JSON.stringify(data));
+        setUsuario(data);
+        
+        return data;
+    } catch (error) {
+        throw error;
+    }
+  };
+
+  const verificarEmailExistente = async (email) => {
+    try {
+        const response = await fetch('http://localhost:3000/api/auth/check-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+        if (!response.ok) throw new Error("Correo no encontrado");
+    } catch (error) {
+        throw error;
+    }
   };
   
-  const verificarEmailExistente = () => Promise.resolve(); // Placeholder
-  const recuperarContraseña = () => Promise.resolve(); // Placeholder
+  const recuperarContraseña = async (email, nuevaPassword) => {
+    try {
+        const response = await fetch('http://localhost:3000/api/auth/reset-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, nuevaPassword })
+        });
+        if (!response.ok) throw new Error("Error al cambiar contraseña");
+    } catch (error) {
+        throw error;
+    }
+  };
 
   const value = {
     usuario,

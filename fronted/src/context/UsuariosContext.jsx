@@ -1,4 +1,3 @@
-// src/context/UsuariosContext.jsx
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
 export const UsuariosContext = createContext();
@@ -8,23 +7,37 @@ export const useUsuarios = () => {
 };
 
 export const UsuariosProvider = ({ children }) => {
-  const [usuarios, setUsuarios] = useState(() => {
-    const usuariosGuardados = localStorage.getItem('usuariosDB');
-    return usuariosGuardados ? JSON.parse(usuariosGuardados) : [];
-  });
+  const [usuarios, setUsuarios] = useState([]);
 
+  // Cargar usuarios desde la BD
   useEffect(() => {
-    localStorage.setItem('usuariosDB', JSON.stringify(usuarios));
-  }, [usuarios]);
+    fetch('http://localhost:3000/api/users')
+        .then(res => res.json())
+        .then(data => {
+            if(Array.isArray(data)) setUsuarios(data);
+        })
+        .catch(err => console.error("Error cargando usuarios:", err));
+  }, []); // Se ejecuta al montar
 
-  const agregarUsuario = (nuevoUsuario) => {
-    setUsuarios(prev => [...prev, nuevoUsuario]);
-  };
+  // Nota: "agregarUsuario" ya no se usa aquí porque eso lo hace el Registro (AuthContext)
+  // Pero lo mantenemos por compatibilidad si algún componente viejo lo llama.
+  const agregarUsuario = () => {}; 
   
-  const toggleActivo = (id) => {
-    setUsuarios(prev => 
-      prev.map(u => u.id === id ? { ...u, activo: !u.activo } : u)
-    );
+  const toggleActivo = async (id) => {
+    try {
+        const response = await fetch(`http://localhost:3000/api/users/${id}/toggle`, {
+            method: 'PUT'
+        });
+        
+        if (response.ok) {
+            const usuarioActualizado = await response.json();
+            setUsuarios(prev => 
+                prev.map(u => u.id === id ? usuarioActualizado : u)
+            );
+        }
+    } catch (error) {
+        console.error("Error al cambiar estado:", error);
+    }
   };
   
   const value = {
@@ -39,5 +52,3 @@ export const UsuariosProvider = ({ children }) => {
     </UsuariosContext.Provider>
   );
 };
-
-

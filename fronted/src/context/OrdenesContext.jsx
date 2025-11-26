@@ -9,12 +9,18 @@ export const useOrdenes = () => {
 export const OrdenesProvider = ({ children }) => {
   const [ordenes, setOrdenes] = useState([]);
 
-  // Cargar órdenes al inicio
-  useEffect(() => {
+  const recargarOrdenes = () => {
     fetch('http://localhost:3000/api/orders')
       .then(res => res.json())
-      .then(data => setOrdenes(data))
-      .catch(err => console.error(err));
+      .then(data => {
+        if (Array.isArray(data)) setOrdenes(data);
+        else setOrdenes([]);
+      })
+      .catch(err => console.error("Error cargando órdenes:", err));
+  };
+
+  useEffect(() => {
+    recargarOrdenes();
   }, []);
 
   const agregarOrden = async (nuevaOrden) => {
@@ -24,10 +30,21 @@ export const OrdenesProvider = ({ children }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(nuevaOrden)
       });
+      
       const data = await response.json();
-      setOrdenes(prev => [...prev, data]);
+
+      if (response.ok) {
+        setOrdenes(prev => [...prev, data]);
+        return true; // Éxito
+      } else {
+        // AQUÍ ESTÁ LA MEJORA: Mostramos el error real del backend
+        console.error("Error del servidor al guardar orden:", data);
+        alert(`Error al guardar: ${data.error || data.message || 'Error desconocido'}`);
+        return false; // Fallo
+      }
     } catch (error) {
-      console.error("Error creando orden", error);
+      console.error("Error de red:", error);
+      return false;
     }
   };
 
@@ -36,23 +53,14 @@ export const OrdenesProvider = ({ children }) => {
       const response = await fetch(`http://localhost:3000/api/orders/${ordenId}/cancel`, {
         method: 'PUT'
       });
-      const data = await response.json();
-
-      setOrdenes(prevOrdenes =>
-        prevOrdenes.map(orden =>
-          orden.id === ordenId ? data : orden
-        )
-      );
-    } catch (error) {
-      console.error(error);
-    }
+      if (response.ok) {
+        const ordenActualizada = await response.json();
+        setOrdenes(prev => prev.map(o => o.id === ordenId ? ordenActualizada : o));
+      }
+    } catch (error) { console.error(error); }
   };
   
-  const value = {
-    ordenes,
-    agregarOrden,
-    cancelarOrden,
-  };
+  const value = { ordenes, agregarOrden, cancelarOrden, recargarOrdenes };
 
   return (
     <OrdenesContext.Provider value={value}>
