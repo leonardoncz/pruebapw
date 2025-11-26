@@ -12,8 +12,14 @@ const getProductoById = async (req, res) => {
 };
 
 const createProducto = async (req, res) => {
-  const nuevo = await Producto.create(req.body);
-  res.status(201).json(nuevo);
+  try {
+    // Simplemente pasamos todo el body. 
+    // Como el modelo ya tiene 'name', 'price', etc., coincidirá con lo que manda Postman.
+    const nuevoProducto = await Producto.create(req.body);
+    res.status(201).json(nuevoProducto);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 const updateProducto = async (req, res) => {

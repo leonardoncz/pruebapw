@@ -1,16 +1,21 @@
-import { useState, useEffect } from "react";
-import productosData from "../../data/productos.json";
+import { useState } from "react";
+// CAMBIO CLAVE 1: Ya no importamos el JSON. Usamos el Contexto.
+import { useMascotas } from "../../context/MascotasContext";
 import "../admin/GestionCategorias.css";
 
 const DetalleCategoria = ({ categoria, onCerrar }) => {
+  // CAMBIO CLAVE 2: Traemos las mascotas reales del backend
+  const { mascotas } = useMascotas();
+  
   const [nombre, setNombre] = useState(categoria.nombre);
   const [descripcion, setDescripcion] = useState(categoria.descripcion);
   const [imagen, setImagen] = useState(categoria.imagen);
-  const [productosCategoria, setProductosCategoria] = useState(categoria.productos || []);
+  // Nota: La lógica de asociar productos aquí es visual, el backend maneja la relación real
+  const [productosCategoria, setProductosCategoria] = useState(categoria.Productos || []); 
   const [busqueda, setBusqueda] = useState("");
 
-  // Productos filtrados para agregar
-  const productosFiltrados = productosData.filter(
+  // CAMBIO CLAVE 3: Filtramos sobre 'mascotas' (backend), no sobre 'productosData' (json)
+  const productosFiltrados = mascotas.filter(
     (p) =>
       p.name.toLowerCase().includes(busqueda.toLowerCase()) &&
       !productosCategoria.some((pc) => pc.id === p.id)
@@ -25,14 +30,15 @@ const DetalleCategoria = ({ categoria, onCerrar }) => {
   };
 
   const guardarCambios = () => {
-    // Aquí se guardaría la categoría modificada
-    console.log({
+    // Aquí podrías llamar a una función del contexto para actualizar la categoría en BD
+    console.log("Guardando cambios...", {
       id: categoria.id,
       nombre,
       descripcion,
       imagen,
       productos: productosCategoria,
     });
+    // Nota: Para persistencia real, necesitarías un método 'actualizarCategoria' que envíe esto al backend
     onCerrar();
   };
 
@@ -51,7 +57,7 @@ const DetalleCategoria = ({ categoria, onCerrar }) => {
         <input value={imagen} onChange={(e) => setImagen(e.target.value)} />
       </div>
 
-      <h3>Productos asociados</h3>
+      <h3>Productos asociados (Vista Previa)</h3>
       <table className="productos-table">
         <thead>
           <tr>
@@ -81,7 +87,7 @@ const DetalleCategoria = ({ categoria, onCerrar }) => {
         </tbody>
       </table>
 
-      <h3>Agregar producto</h3>
+      <h3>Agregar producto a la lista</h3>
       <input
         type="text"
         placeholder="Buscar producto por nombre"
@@ -99,7 +105,7 @@ const DetalleCategoria = ({ categoria, onCerrar }) => {
           </tr>
         </thead>
         <tbody>
-          {productosFiltrados.map((p) => (
+          {productosFiltrados.slice(0, 5).map((p) => (
             <tr key={p.id}>
               <td>
                 <img src={p.image} alt={p.name} className="producto-img" />
@@ -119,7 +125,7 @@ const DetalleCategoria = ({ categoria, onCerrar }) => {
 
       <div style={{ marginTop: "1rem", display: "flex", gap: "1rem" }}>
         <button className="btn-agregar" onClick={guardarCambios}>
-          Guardar
+          Guardar (Consola)
         </button>
         <button className="btn-agregar" onClick={onCerrar}>
           Cerrar

@@ -6,7 +6,8 @@ import "./CarritoPage.css";
 export default function CarritoPage() {
   const { items, modificarCantidad, eliminarDelCarrito } = useCarrito();
 
-  const total = items.reduce((sum, item) => sum + (item.price || 0) * item.quantity, 0);
+  // CORRECCIÓN: Number() para asegurar que sumamos números
+  const total = items.reduce((sum, item) => sum + Number(item.price || 0) * item.quantity, 0);
 
   return (
     <div className="page-container">
@@ -26,7 +27,8 @@ export default function CarritoPage() {
                 <div className="item-info">
                   <h3>{item.name}</h3>
                   <p>Raza: {item.breed}</p>
-                  <p className="item-precio-unitario">${(item.price || 0).toFixed(2)}</p>
+                  {/* CORRECCIÓN: Number() antes de toFixed */}
+                  <p className="item-precio-unitario">${Number(item.price || 0).toFixed(2)}</p>
                   <div className="item-acciones">
                     <button onClick={() => eliminarDelCarrito(item.id)}>Eliminar</button>
                   </div>
@@ -38,7 +40,8 @@ export default function CarritoPage() {
                     <button onClick={() => modificarCantidad(item.id, item.quantity + 1)}>+</button>
                   </div>
                   <p className="item-subtotal">
-                    <strong>${((item.price || 0) * item.quantity).toFixed(2)}</strong>
+                    {/* CORRECCIÓN: Number() en el cálculo */}
+                    <strong>${(Number(item.price || 0) * item.quantity).toFixed(2)}</strong>
                   </p>
                 </div>
               </div>
@@ -58,7 +61,7 @@ export default function CarritoPage() {
             <hr />
             <div className="resumen-total">
               <span>Total</span>
-              <strong>${total.toFixed(2)}</strong>
+              <span>${total.toFixed(2)}</span>
             </div>
             <Link to="/checkout" className="btn btn-primary" style={{width: '100%', marginTop: '1.5rem'}}>Proceder al Pago</Link>
           </div>
@@ -67,4 +70,3 @@ export default function CarritoPage() {
     </div>
   );
 }
-

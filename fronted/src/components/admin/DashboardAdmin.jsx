@@ -1,4 +1,3 @@
-// src/components/admin/DashboardAdmin.jsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
@@ -10,10 +9,11 @@ import "./Admin.css";
 
 const DashboardAdmin = () => {
   const navigate = useNavigate();
-  const { ordenes } = useOrdenes();
-  const { usuarios } = useUsuarios();
-  const { mascotas } = useMascotas();
-  const { categorias } = useCategorias();
+  // Validamos que sean arrays para evitar errores si cargan lento
+  const { ordenes = [] } = useOrdenes();
+  const { usuarios = [] } = useUsuarios();
+  const { mascotas = [] } = useMascotas();
+  const { categorias = [] } = useCategorias();
 
   const [resumen, setResumen] = useState({
     totalIngresos: 0,
@@ -21,18 +21,19 @@ const DashboardAdmin = () => {
   const [graficoDatos, setGraficoDatos] = useState([]);
 
   useEffect(() => {
-    const totalIngresos = ordenes.reduce((acc, o) => acc + parseFloat(o.total), 0);
+    // CORRECCIÓN: parseFloat asegura que sumemos números, no textos
+    const totalIngresos = ordenes.reduce((acc, o) => acc + parseFloat(o.total || 0), 0);
     setResumen({ totalIngresos });
 
     const agrupado = ordenes.reduce((acc, o) => {
-      const fecha = o.fecha;
-      acc[fecha] = (acc[fecha] || 0) + parseFloat(o.total);
+      const fecha = o.fecha; // Asegúrate que tu backend envíe fecha, o usa o.createdAt
+      acc[fecha] = (acc[fecha] || 0) + parseFloat(o.total || 0);
       return acc;
     }, {});
 
     const datosGrafico = Object.entries(agrupado)
         .map(([fecha, total]) => ({ fecha, total }))
-        .sort((a, b) => new Date(a.fecha.split('/').reverse().join('-')) - new Date(b.fecha.split('/').reverse().join('-')));
+        .sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
 
     setGraficoDatos(datosGrafico);
   }, [ordenes]);
@@ -42,15 +43,14 @@ const DashboardAdmin = () => {
       <h2 className="admin-title">Dashboard</h2>
 
       <div className="dashboard-cards">
-        {/* CORRECCIÓN: Esta tarjeta ahora es un enlace que lleva a la gestión de órdenes */}
         <div className="dashboard-card clickable" onClick={() => navigate("/admin/ordenes")}>
           <h3>Gestionar Órdenes</h3>
-          {/* CORRECCIÓN: Muestra el total de órdenes para ser consistente */}
           <p>{ordenes.length}</p>
         </div>
         <div className="dashboard-card">
           <h3>Ingresos Totales</h3>
-          <p>${resumen.totalIngresos.toFixed(2)}</p>
+          {/* CORRECCIÓN: Number() para evitar crash con toFixed */}
+          <p>${Number(resumen.totalIngresos).toFixed(2)}</p>
         </div>
         <div className="dashboard-card clickable" onClick={() => navigate("/admin/mascotas")}>
           <h3>Gestionar Mascotas</h3>
@@ -74,7 +74,7 @@ const DashboardAdmin = () => {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="fecha" />
               <YAxis />
-              <Tooltip formatter={(value) => `$${value.toFixed(2)}`} />
+              <Tooltip formatter={(value) => `$${Number(value).toFixed(2)}`} />
               <Line type="monotone" dataKey="total" name="Ingresos" stroke="var(--color-primary-light)" strokeWidth={2} />
             </LineChart>
           </ResponsiveContainer>

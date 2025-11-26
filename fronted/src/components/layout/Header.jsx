@@ -1,4 +1,3 @@
-// src/components/layout/Header.jsx
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -6,6 +5,7 @@ import { useCarrito } from '../../context/CarritoContext';
 import './Header.css';
 
 const Header = () => {
+  // Al usar useAuth(), el componente se re-renderiza si 'usuario' cambia en el Context
   const { usuario, logout } = useAuth();
   const { items } = useCarrito();
   const navigate = useNavigate();
@@ -54,7 +54,12 @@ const Header = () => {
         {usuario ? (
           <div className="dropdown-container" ref={dropdownRef}>
             <button className="user-avatar-button" onClick={toggleDropdown}>
-              <img src={usuario.avatar || `https://ui-avatars.com/api/?name=${usuario.nombre}&background=4682B4&color=fff`} alt="User Avatar" className="user-avatar" />
+              {/* CORRECCIÓN: Usamos key para forzar refresco si cambia el nombre o src dinámico */}
+              <img 
+                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(usuario.nombre)}&background=4682B4&color=fff`} 
+                alt="User Avatar" 
+                className="user-avatar" 
+              />
             </button>
             {showDropdown && (
               <ul className="dropdown-menu">
@@ -80,4 +85,3 @@ const Header = () => {
 };
 
 export default Header;
-

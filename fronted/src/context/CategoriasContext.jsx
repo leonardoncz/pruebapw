@@ -4,68 +4,59 @@ const CategoriasContext = createContext();
 export const useCategorias = () => useContext(CategoriasContext);
 
 const CategoriasProvider = ({ children }) => {
-  // 🔹 Estado inicial solo una vez, desde localStorage o valores por defecto
-  const [categorias, setCategorias] = useState(() => {
-    try {
-      const saved = localStorage.getItem("categoriasDB");
-      if (saved) return JSON.parse(saved);
-      // valores por defecto
-      return [
-        { id: 1, nombre: "Perros", descripcion: "Productos para perros", imagen: "/img/perros.jpg", productosAsociados: [] },
-        { id: 2, nombre: "Gatos", descripcion: "Productos para gatos", imagen: "/img/gatos.jpg", productosAsociados: [] },
-        { id: 3, nombre: "Aves", descripcion: "Productos para aves", imagen: "/img/aves.jpg", productosAsociados: [] },
-        { id: 4, nombre: "Peces", descripcion: "Productos para peces", imagen: "/img/peces.jpg", productosAsociados: [] },
-        { id: 5, nombre: "Roedores", descripcion: "Productos para roedores", imagen: "/img/roedores.jpg", productosAsociados: [] },
-        { id: 6, nombre: "Reptiles", descripcion: "Productos para reptiles", imagen: "/img/reptiles.jpg", productosAsociados: [] },
-      ];
-    } catch (err) {
-      console.error("Error al leer categoriasDB:", err);
-      return [];
-    }
-  });
+  const [categorias, setCategorias] = useState([]);
 
-  // 🔹 Guardar automáticamente en localStorage cada vez que cambien las categorías
+  // Cargar desde Backend
   useEffect(() => {
-    localStorage.setItem("categoriasDB", JSON.stringify(categorias));
-  }, [categorias]);
+    fetch('http://localhost:3000/api/categories')
+        .then(res => res.json())
+        .then(data => {
+            if(Array.isArray(data)) setCategorias(data);
+            else setCategorias([]);
+        })
+        .catch(err => console.error(err));
+  }, []);
 
-  // 🔹 CRUD
-  const agregarCategoria = (nueva) => {
-    const categoria = {
-      ...nueva,
-      id: Date.now(),
-      productosAsociados: []
-    };
-    setCategorias(prev => [...prev, categoria]);
+  // CRUD con Backend
+  const agregarCategoria = async (nueva) => {
+    try {
+        const res = await fetch('http://localhost:3000/api/categories', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(nueva)
+        });
+        const data = await res.json();
+        setCategorias(prev => [...prev, data]);
+    } catch (error) { console.error(error); }
   };
 
-  const eliminarCategoria = (id) => {
-    setCategorias(prev => prev.filter(cat => cat.id !== id));
+  const eliminarCategoria = async (id) => {
+    try {
+        await fetch(`http://localhost:3000/api/categories/${id}`, { method: 'DELETE' });
+        setCategorias(prev => prev.filter(cat => cat.id !== id));
+    } catch (error) { console.error(error); }
   };
 
-  const editarCategoria = (id, datos) => {
-    setCategorias(prev => prev.map(cat => (cat.id === id ? { ...cat, ...datos } : cat)));
+  const editarCategoria = async (id, datos) => {
+     try {
+        const res = await fetch(`http://localhost:3000/api/categories/${id}`, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(datos)
+        });
+        const data = await res.json();
+        setCategorias(prev => prev.map(cat => (cat.id === id ? data : cat)));
+     } catch (error) { console.error(error); }
   };
+  
+  const getCategoriaById = (id) => {
+      return categorias.find(c => c.id === id);
+  }
 
-  // 🔹 Asociación de productos
-  const asociarProductoACategoria = (categoriaId, productoId) => {
-    setCategorias(prev =>
-      prev.map(cat =>
-        cat.id === parseInt(categoriaId)
-          ? { ...cat, productosAsociados: [...cat.productosAsociados, productoId] }
-          : cat
-      )
-    );
-  };
-
-  const desasociarProductoDeCategoria = (productoId) => {
-    setCategorias(prev =>
-      prev.map(cat => ({
-        ...cat,
-        productosAsociados: cat.productosAsociados.filter(id => id !== productoId)
-      }))
-    );
-  };
+  // Nota: asociar/desasociar producto se maneja al editar el Producto (cambiando su categoriaId),
+  // no necesitamos funciones especiales aquí por ahora.
+  const asociarProductoACategoria = () => {}; 
+  const desasociarProductoDeCategoria = () => {};
 
   return (
     <CategoriasContext.Provider
@@ -74,6 +65,7 @@ const CategoriasProvider = ({ children }) => {
         agregarCategoria,
         eliminarCategoria,
         editarCategoria,
+        getCategoriaById,
         asociarProductoACategoria,
         desasociarProductoDeCategoria
       }}

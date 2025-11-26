@@ -12,24 +12,22 @@ const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const ordenRoutes = require('./routes/ordenRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
-// const categoryRoutes = require('./routes/categoryRoutes'); // Cuando lo crees
-// const userRoutes = require('./routes/userRoutes');       // Cuando lo crees
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 const PORT = 3000;
 
 // Middleware
 app.use(cors()); // Permite peticiones desde React (localhost:5173)
-app.use(express.json()); // Permite leer JSON del body
+app.use(express.json({ limit: '50mb' })); // Permite leer JSON del body
 app.use(morgan('dev')); // Muestra peticiones en consola
-
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 // Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', ordenRoutes);
 app.use('/api/categories', categoryRoutes);
-// app.use('/api/categories', categoryRoutes);
-// app.use('/api/users', userRoutes);
+app.use('/api/users', userRoutes);
 
 // Ruta base
 app.get('/', (req, res) => {

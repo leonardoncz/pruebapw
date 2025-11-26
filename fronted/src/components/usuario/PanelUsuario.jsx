@@ -1,13 +1,13 @@
-// src/components/usuario/PanelUsuario.jsx
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
-import { useOrdenes } from "../../context/OrdenesContext.jsx";
+import { useAuth } from "../../context/AuthContext"; // Corrige la extensión .jsx si no es necesaria
+import { useOrdenes } from "../../context/OrdenesContext";
 import './PanelUsuario.css';
 
 const PanelUsuario = () => {
   const { usuario } = useAuth();
-  const { ordenes } = useOrdenes();
+  // Aseguramos que 'ordenes' sea un array, por si el fetch falla
+  const { ordenes = [] } = useOrdenes();
   
   const [ordenesDelUsuario, setOrdenesDelUsuario] = useState([]);
   const [ordenesPaginadas, setOrdenesPaginadas] = useState([]);
@@ -15,10 +15,12 @@ const PanelUsuario = () => {
   const ITEMS_POR_PAGINA = 10;
 
   useEffect(() => {
-    if (usuario && ordenes) {
+    if (usuario && Array.isArray(ordenes)) {
       const ordenesFiltradas = ordenes.filter(
-        (orden) => orden.usuarioId === usuario.id
+        // CORRECCIÓN: Usamos '==' para que "1" sea igual a 1, o parseamos ambos
+        (orden) => parseInt(orden.usuarioId) === parseInt(usuario.id)
       );
+      // Ordenamos por ID descendente (más nuevas primero)
       const ordenesOrdenadas = ordenesFiltradas.sort((a, b) => b.id - a.id);
       setOrdenesDelUsuario(ordenesOrdenadas);
     }
@@ -38,13 +40,9 @@ const PanelUsuario = () => {
 
   const getStatusClassName = (estado) => {
     switch (estado?.toLowerCase()) {
-      case "enviado":
-        return "status-enviado";
-      case "cancelada":
-        return "status-cancelada";
-      case "pendiente":
-      default:
-        return "status-pendiente";
+      case "enviado": return "status-enviado";
+      case "cancelada": return "status-cancelada";
+      case "pendiente": default: return "status-pendiente";
     }
   };
 
@@ -76,7 +74,8 @@ const PanelUsuario = () => {
                         {orden.estado}
                       </span>
                     </td>
-                    <td>${orden.total}</td>
+                    {/* CORRECCIÓN: Number() para evitar error con toFixed */}
+                    <td>${Number(orden.total).toFixed(2)}</td>
                     <td>
                       <Link to={`/orden/${orden.id}`} className="link-detalle">Ver detalle</Link>
                     </td>
@@ -120,4 +119,3 @@ const PanelUsuario = () => {
 };
 
 export default PanelUsuario;
-

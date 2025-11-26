@@ -1,22 +1,22 @@
 {
   "development": {
     "username": "postgres",
-    "password": "2005",
-    "database": "trabajobdpw",
+    "password": "1234",
+    "database": "prograwebDB",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
-    "password": "2005",
-    "database": "trabajobdpw_test",
+    "password": "1234",
+    "database": "prograwebDB",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
     "username": "postgres",
-    "password": "2005",
-    "database": "trabajobdpw_prod",
+    "password": "1234",
+    "database": "prograwebDB",
     "host": "127.0.0.1",
     "dialect": "postgres"
   }

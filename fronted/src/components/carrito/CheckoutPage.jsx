@@ -18,7 +18,7 @@ export default function CheckoutPage() {
     cvv: ""
   });
 
-  const total = items.reduce((sum, item) => sum + (item.price || 0) * item.quantity, 0);
+  const total = items.reduce((sum, item) => sum + Number(item.price || 0) * item.quantity, 0);
 
   const handleChange = (e) => {
     setPago({
@@ -27,7 +27,7 @@ export default function CheckoutPage() {
     });
   };
 
-  const handlePagar = (e) => {
+  const handlePagar = async (e) => {
     e.preventDefault();
 
     if (!usuario || items.length === 0) {
@@ -35,38 +35,36 @@ export default function CheckoutPage() {
       return;
     }
 
-    if (pago.tarjeta.length !== 16) {
-      alert("El número de tarjeta debe tener 16 dígitos.");
-      return;
-    }
+    // Validaciones de tarjeta... (Mantenlas igual)
+    if (pago.tarjeta.length !== 16) return alert("Tarjeta inválida");
+    if (pago.cvv.length !== 3) return alert("CVV inválido");
 
-    if (!pago.expiracion.match(/^(0[1-9]|1[0-2])\/\d{2}$/)) {
-      alert("La fecha debe ser MM/AA.");
-      return;
-    }
-
-    if (pago.cvv.length !== 3) {
-      alert("El CVV debe tener 3 dígitos.");
-      return;
-    }
-
+    // --- CORRECCIÓN AQUÍ ---
     const nuevaOrden = {
-      id: Date.now(),
-      usuarioId: usuario.id,
-      fecha: new Date().toLocaleDateString('es-ES', {
-        day: '2-digit', month: '2-digit', year: 'numeric'
-      }),
-      usuario: { nombre: usuario.nombre, email: usuario.email },
-      productos: items,
+      // 1. NO enviamos 'id'. Dejamos que PostgreSQL lo cree (1, 2, 3...)
+      // 2. NO enviamos el objeto 'usuario'. Solo el ID.
+      usuarioId: usuario.id, 
+      fecha: new Date().toLocaleDateString('es-ES'),
+      productos: items, // Array de productos
       estado: "Pendiente",
-      total: total.toFixed(2),
-      pago // aca se guardan los datos de la tarjeta
-  };
+      total: total.toFixed(2), // Precio como string o numero
+      pago: { 
+          tarjeta: `****-${pago.tarjeta.slice(-4)}`, // Solo últimos 4 dígitos
+          titular: pago.nombreTarjeta
+      } 
+    };
 
-  agregarOrden(nuevaOrden);
-  limpiarCarrito();
-  navigate('/confirmacion');
-};
+    console.log("Enviando orden:", nuevaOrden); // Para depurar en consola
+
+    const exito = await agregarOrden(nuevaOrden); // agregarOrden devuelve true/false
+    
+    if (exito) {
+        limpiarCarrito();
+        navigate('/confirmacion');
+    } else {
+        alert("Hubo un error al procesar tu compra. Intenta nuevamente.");
+    }
+  };
 
   if (items.length === 0) {
       return null;

@@ -1,4 +1,3 @@
-// src/components/admin/FormularioCategoria.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useCategorias } from '../../context/CategoriasContext';
@@ -12,38 +11,51 @@ const FormularioCategoria = () => {
   const [form, setForm] = useState({
     nombre: '',
     descripcion: '',
-    image: null,
+    imagen: '', // Aquí guardaremos el Base64
     productos: []
   });
 
   const [imagePreview, setImagePreview] = useState('');
+
+  // --- FUNCIÓN MÁGICA: Convertir imagen a texto ---
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => resolve(fileReader.result);
+      fileReader.onerror = (error) => reject(error);
+    });
+  };
 
   useEffect(() => {
     if (isEditing) {
       const categoria = getCategoriaById(parseInt(id));
       if (categoria) {
         setForm(categoria);
-        if (categoria.image) setImagePreview(categoria.image);
+        if (categoria.imagen) setImagePreview(categoria.imagen);
       }
     }
   }, [id, isEditing, getCategoriaById]);
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { name, value, type, files } = e.target;
+    
     if (type === 'file') {
       const file = files[0];
       if (file) {
-        setForm((f) => ({ ...f, image: file }));
-        setImagePreview(URL.createObjectURL(file));
+        // Convertimos la imagen a texto Base64
+        const base64 = await convertToBase64(file);
+        setForm(prev => ({ ...prev, imagen: base64 }));
+        setImagePreview(base64);
       }
     } else {
-      setForm((f) => ({ ...f, [name]: value }));
+      setForm(prev => ({ ...prev, [name]: value }));
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!isEditing && !form.image) {
+    if (!isEditing && !form.imagen) {
       alert('Por favor, sube una imagen para la categoría.');
       return;
     }
@@ -76,17 +88,17 @@ const FormularioCategoria = () => {
 
           <div className="form-group">
             <label htmlFor="image">Imagen Representativa</label>
-            <input id="image" name="image" type="file" accept="image/*" onChange={handleChange} className="form-input" />
+            {/* Nota: el name no importa tanto aquí porque lo manejamos manualmente, pero mantenemos consistencia */}
+            <input id="image" name="imagen" type="file" accept="image/*" onChange={handleChange} className="form-input" />
           </div>
 
           {imagePreview && (
             <div className="form-group" style={{ textAlign: 'center' }}>
               <p>Vista previa:</p>
-              <img src={imagePreview} alt="Vista previa" style={{ maxWidth: '150px', borderRadius: 'var(--border-radius)' }} />
+              <img src={imagePreview} alt="Vista previa" style={{ maxWidth: '150px', borderRadius: '8px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }} />
             </div>
           )}
           
-
           <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
             <Link to="/admin/categorias" className="btn btn-secondary" style={{ flex: 1 }}>
               Cancelar
