@@ -61,5 +61,6 @@ jobs:
         with:
           app-name: 'testserverapi1'
           slot-name: 'Production'
-          package: .
+          package: ./backend
+
           
