@@ -24,7 +24,6 @@ jobs:
           node-version: '22.x'
 
       - name: npm install, build, and test
-        working-directory: ./backend
         run: |
           npm install
           npm run build --if-present
@@ -52,9 +51,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_8D685F03E4FF4FE881ADA92C26B12537 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D5A63FD748364DE8B1CA2974E97E36A7 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_8BA96888373E4E64A5966674E47CC443 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_E47CBC7D56604E418F33E4831D9FCCF9 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_ADB6DB8B5E2142FF87D06F7291C281E7 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_266E90CEF8CD4C2DA2EC732E3E6B0363 }}
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
@@ -62,7 +61,5 @@ jobs:
         with:
           app-name: 'testserverapi1'
           slot-name: 'Production'
-          package: ./backend
-
+          package: .
           
-
