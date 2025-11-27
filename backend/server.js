@@ -33,7 +33,6 @@ app.use('/api/users', userRoutes);
 app.get('/', (req, res) => {
     res.send('API de PetAdopt funcionando 🐶');
 });
-
 sequelize.sync({ alter: true })
   .then(() => console.log("Tablas sincronizadas correctamente"))
   .catch(err => console.error("Error al sincronizar tablas:", err));
