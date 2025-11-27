@@ -8,10 +8,10 @@
 
   const db = {};
   const sequelize = new Sequelize(
-    config.development.database,
-    config.development.username,
-    config.development.password,
-    config.development
+    config.database,
+    config.username,
+    config.password,
+    config
   );
 
   fs.readdirSync(__dirname)
