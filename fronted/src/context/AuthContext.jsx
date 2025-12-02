@@ -10,12 +10,21 @@ const URL = "https://testserverapi1-gchyazccfebqdwhq.centralus-01.azurewebsites.
 
 const AuthProvider = ({ children }) => {
   const [usuario, setUsuario] = useState(null);
+  // 1. NUEVO ESTADO: Iniciamos cargando en true
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const usuarioGuardado = localStorage.getItem('usuarioLogueado');
     if (usuarioGuardado) {
-      setUsuario(JSON.parse(usuarioGuardado));
+      try {
+        setUsuario(JSON.parse(usuarioGuardado));
+      } catch (error) {
+        console.error("Error al leer sesión local:", error);
+        localStorage.removeItem('usuarioLogueado'); // Limpiamos si está corrupto
+      }
     }
+    // 2. IMPORTANTE: Avisamos que ya terminamos de revisar
+    setLoading(false);
   }, []);
 
   const login = async (email, password) => {
@@ -65,7 +74,6 @@ const AuthProvider = ({ children }) => {
     setUsuario(null);
   };
   
-  // --- CORRECCIÓN: Actualizar perfil conecta con Backend y actualiza estado global ---
   const actualizarPerfil = async (datos) => {
     if (!usuario) return;
 
@@ -80,8 +88,6 @@ const AuthProvider = ({ children }) => {
 
         if (!response.ok) throw new Error(data.message || "Error al actualizar");
 
-        // ACTUALIZACIÓN CRÍTICA: Actualizamos localStorage y Estado Global
-        // Esto hará que el avatar cambie inmediatamente
         localStorage.setItem('usuarioLogueado', JSON.stringify(data));
         setUsuario(data);
         
@@ -125,7 +131,14 @@ const AuthProvider = ({ children }) => {
     actualizarPerfil,
     verificarEmailExistente,
     recuperarContraseña,
+    loading // Puedes exportarlo si lo necesitas
   };
+
+  // 3. BLOQUEO: Si estamos cargando, mostramos pantalla blanca o spinner
+  // en lugar de cargar la App y provocar redirecciones erróneas.
+  if (loading) {
+    return <div style={{display: 'flex', justifyContent: 'center', marginTop: '50px'}}>Cargando...</div>;
+  }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
